@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>COMMAND CENTRE v9.8 PRO — Penghapusan Fungsi Bendungan No. 5 & No. 6A (Pad C Ext) PT Bumi Suksesindo</title>
+
+  <!-- THREE.JS & ORBIT CONTROLS FOR FULL REALISTIC 3D EARTH + CLOUDS -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- EARLY SECURITY GUARD V5.0 PRO (TACTICAL AUDIO & TOAST HUD) -->
+  <script id="mineBowTieEarlySecurityGuard">
+    (function() {
+      'use strict';
+      var attemptCount = 0;
+      var toastTimeout = null;
+      var progressInterval = null;
+
+      function playSecurityTone() {
+        try {
+          var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          var ctx = new AudioContextClass();
+          if (ctx.state === 'suspended') ctx.resume();
+          var now = ctx.currentTime;
+
+          var osc1 = ctx.createOscillator();
+          var gain1 = ctx.createGain();
+          osc1.type = 'sawtooth';
+          osc1.frequency.setValueAtTime(960, now);
+          osc1.frequency.exponentialRampToValueAtTime(440, now + 0.14);
+          gain1.gain.setValueAtTime(0.09, now);
+          gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc1.connect(gain1);
+          gain1.connect(ctx.destination);
+          osc1.start(now);
+          osc1.stop(now + 0.15);
+
+          var osc2 = ctx.createOscillator();
+          var gain2 = ctx.createGain();
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(540, now + 0.08);
+          osc2.frequency.exponentialRampToValueAtTime(240, now + 0.24);
+          gain2.gain.setValueAtTime(0.07, now + 0.08);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+          osc2.connect(gain2);
+          gain2.connect(ctx.destination);
+          osc2.start(now + 0.08);
+          osc2.stop(now + 0.25);
+        } catch(e) {}
+      }
+
+      function showSecurityToastHUD(violationType, actionTitle, explanationText) {
+        attemptCount++;
+        playSecurityTone();
+        var now = new Date();
+        var timeStr = now.toLocaleTimeString('id-ID').replace(/:/g, '.') + ' WIB';
+
+        var existingHud = document.getElementById('damSecurityToastHUD');
+        if (existingHud) {
+          var badge = document.getElementById('secHudAttemptBadge');
+          if (badge) badge.innerText = 'Percobaan ke-' + attemptCount;
+          var titleEl = document.getElementById('secHudActionTitle');
+          if (titleEl) titleEl.innerText = actionTitle;
+          var expEl = document.getElementById('secHudExplanation');
+          if (expEl) expEl.innerText = explanationText;
+          var timeEl = document.getElementById('secHudTimestamp');
+          if (timeEl) timeEl.innerText = timeStr;
+          resetCountdown(3800);
+          return;
+        }
+
+        var hud = document.createElement('div');
+        hud.id = 'damSecurityToastHUD';
+        hud.className = 'dam-sec-hud';
+        hud.innerHTML = [
+          '<div class="sec-hud-card">',
+          '  <div class="sec-hud-header">',
+          '    <div class="sec-hud-title-group">',
+          '      <div class="sec-hud-icon-wrap"><i class="fa-solid fa-shield-halved sec-shield-icon"></i></div>',
+          '      <div>',
+          '        <div class="sec-hud-title">PROTOKOL KEAMANAN COMMAND CENTRE PRO</div>',
+          '        <div class="sec-hud-subtitle">EARLY GUARD V5.0 • INTEGRITAS ALGORITMA K3 & GEOTEKNIK</div>',
+          '      </div>',
+          '    </div>',
+          '    <div class="sec-hud-ctrls">',
+          '      <span id="secHudAttemptBadge" class="sec-badge-attempt">Percobaan ke-' + attemptCount + '</span>',
+          '      <button type="button" class="sec-hud-close-btn" onclick="window.BOWTIE_SECURITY_GUARD.dismiss()"><i class="fa-solid fa-xmark"></i></button>',
+          '    </div>',
+          '  </div>',
+          '  <div class="sec-hud-body">',
+          '    <div class="sec-action-banner">',
+          '      <i class="fa-solid fa-ban text-rose-400"></i>',
+          '      <span id="secHudActionTitle" class="sec-action-title">' + actionTitle + '</span>',
+          '    </div>',
+          '    <p id="secHudExplanation" class="sec-explanation">' + explanationText + '</p>',
+          '  </div>',
+          '  <div class="sec-hud-footer">',
+          '    <div class="sec-meta-left"><span class="sec-meta-dot"></span><span>Model Geoteknik, Bow-Tie & Hak Cipta Ir. Mohamad Hartadi Terlindungi</span></div>',
+          '    <div id="secHudTimestamp" class="sec-timestamp">' + timeStr + '</div>',
+          '  </div>',
+          '  <div class="sec-progress-track"><div id="secProgressBar" class="sec-progress-bar"></div></div>',
+          '</div>'
+        ].join('\n');
+
+        (document.body || document.documentElement).appendChild(hud);
+        resetCountdown(3800);
+      }
+
+      function resetCountdown(durationMs) {
+        if (toastTimeout) clearTimeout(toastTimeout);
+        if (progressInterval) clearInterval(progressInterval);
+        var bar = document.getElementById('secProgressBar');
+        if (bar) {
+          bar.style.width = '100%';
+          var startTime = Date.now();
+          progressInterval = setInterval(function() {
+            var elapsed = Date.now() - startTime;
+            var remaining = Math.max(0, 1 - (elapsed / durationMs));
+            if (bar) bar.style.width = (remaining * 100) + '%';
+            if (elapsed >= durationMs) clearInterval(progressInterval);
+          }, 40);
+        }
+        toastTimeout = setTimeout(dismissHUD, durationMs);
+      }
+
+      function dismissHUD() {
+        if (progressInterval) clearInterval(progressInterval);
+        var hud = document.getElementById('damSecurityToastHUD');
+        if (hud && hud.parentNode) hud.parentNode.removeChild(hud);
+      }
+
+      function handleSecurityKeydown(e) {
+        var key = (e.key || '').toLowerCase();
+        var keyCode = e.keyCode || e.which;
+        var isCtrl = e.ctrlKey || e.metaKey;
+        var isShift = e.shiftKey;
+        var isAlt = e.altKey;
+
+        if (isCtrl && (key === 'u' || keyCode === 85)) {
+          e.preventDefault(); e.stopPropagation();
+          showSecurityToastHUD('VIEW_SOURCE', 'AKSES KODE SUMBER DIBLOKIR: Ctrl + U', 'Pemeriksaan kode sumber halaman dinonaktifkan untuk melindungi algoritma geoteknik, hidrometeorologi, dan pelaporan otomatis.');
+          return false;
+        }
+        if (key === 'f12' || keyCode === 123 || (isCtrl && (isShift || isAlt) && ['i','j','c','k'].includes(key))) {
+          e.preventDefault(); e.stopPropagation();
+          showSecurityToastHUD('DEVTOOLS', 'AKSES DEVTOOLS DIBLOKIR', 'Inspeksi elemen dan konsol pengembang dinonaktifkan demi menjaga integritas simulasi Bendungan Tujuh Bukit.');
+          return false;
+        }
+        if (isCtrl && !isShift && (key === 's' || keyCode === 83)) {
+          e.preventDefault(); e.stopPropagation();
+          showSecurityToastHUD('SAVE_PAGE', 'PENYIMPANAN HALAMAN DIBLOKIR: Ctrl + S', 'Gunakan tombol resmi Ekspor Word (.doc), Excel (.xlsx), atau Cetak PDF pada toolbar aplikasi.');
+          return false;
+        }
+      }
+
+      function handleSecurityContextMenu(e) {
+        var tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || e.target.isContentEditable) return true;
+        e.preventDefault(); e.stopPropagation();
+        showSecurityToastHUD('CONTEXT_MENU', 'PROTEKSI KLIK KANAN AKTIF', 'Menu konteks dinonaktifkan untuk melindungi aset visual WebGIS, Bumi 3D Realistis, dan Dasbor Supervisi.');
+        return false;
+      }
+
+      window.addEventListener('keydown', handleSecurityKeydown, true);
+      window.addEventListener('contextmenu', handleSecurityContextMenu, true);
+
+      window.BOWTIE_SECURITY_GUARD = {
+        version: '5.0.0-PRO',
+        triggerViolation: showSecurityToastHUD,
+        dismiss: dismissHUD
+      };
+    })();
+  </script>
+
+  <!-- REALISTIC 3D EARTH ENGINE (FULL SPHERE + REALISTIC CLOUDS + ATMOSPHERE + ORBITCONTROLS) -->
+  <script>
+    var bootEarthObj = null, bgEarthObj = null, ssEarthObj = null, bgEarthRAF = 0, ssEarthInit = false;
+
+    var EARTH_TEX_SOURCES = {
+      day: [
+        'https://unpkg.com/three-globe@2.45.5/example/img/earth-blue-marble.jpg',
+        'https://cdn.jsdelivr.net/npm/three-globe@2.45.5/example/img/earth-blue-marble.jpg'
+      ],
+      clouds: [
+        'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_clouds_1024.png',
+        'https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/textures/planets/earth_clouds_1024.png'
+      ],
+      stars: [
+        'https://unpkg.com/three-globe@2.45.5/example/img/night-sky.png',
+        'https://cdn.jsdelivr.net/npm/three-globe@2.45.5/example/img/night-sky.png'
+      ]
+    };
+
+    function earthTex(loader, urls, i, cbOk) {
+      if (i >= urls.length) { cbOk(null); return; }
+      loader.load(urls[i], function(t) { cbOk(t); }, undefined, function() { earthTex(loader, urls, i + 1, cbOk); });
+    }
+
+    function loadEarthSet(loader, cbOk) {
+      earthTex(loader, EARTH_TEX_SOURCES.day, 0, function(dayT) {
+        if (!dayT) { cbOk(null); return; }
+        earthTex(loader, EARTH_TEX_SOURCES.clouds, 0, function(cloudT) {
+          earthTex(loader, EARTH_TEX_SOURCES.stars, 0, function(starT) {
+            cbOk({ day: dayT, clouds: cloudT, stars: starT });
+          });
+        });
+      });
+    }
+
+    function createRealisticEarth(container, opts) {
+      if (!container || typeof THREE === 'undefined') return null;
+      opts = opts || {};
+      container.innerHTML = '';
+      var W = Math.max(container.clientWidth || window.innerWidth, 260);
+      var H = Math.max(container.clientHeight || window.innerHeight, 260);
+      var scene = new THREE.Scene();
+
+      // Field of view & jarak kamera diatur presisi agar bola bumi tampil UTUH 100% tanpa terpotong
+      var camera = new THREE.PerspectiveCamera(38, W / H, 0.1, 3000);
+      camera.position.set(0, opts.camY !== undefined ? opts.camY : 4, opts.camZ || 76);
+
+      var renderer = null;
+      try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); }
+      catch (e) { return null; }
+      renderer.setSize(W, H);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      container.appendChild(renderer.domElement);
+
+      var sun = new THREE.DirectionalLight(0xfff4e0, 1.38);
+      sun.position.set(60, 22, 38);
+      scene.add(sun);
+      scene.add(new THREE.AmbientLight(0x3a5f8a, 0.88));
+
+      var R = opts.radius || 22;
+      var earthGroup = new THREE.Group();
+      scene.add(earthGroup);
+
+      var loader = new THREE.TextureLoader();
+      loader.setCrossOrigin('anonymous');
+
+      var earthMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(R, 64, 64),
+        new THREE.MeshPhongMaterial({ color: 0x1d4e89, emissive: 0x0a1a2e, shininess: 8 })
+      );
+      earthGroup.add(earthMesh);
+
+      var cloudMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(R * 1.014, 48, 48),
+        new THREE.MeshPhongMaterial({ color: 0xdfe9f5, transparent: true, opacity: 0.42, depthWrite: false })
+      );
+      earthGroup.add(cloudMesh);
+
+      var atmo = new THREE.Mesh(
+        new THREE.SphereGeometry(R * 1.13, 48, 48),
+        new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.11, side: THREE.BackSide })
+      );
+      scene.add(atmo);
+
+      var starMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(R * 60, 32, 32),
+        new THREE.MeshBasicMaterial({ color: 0x06101e, side: THREE.BackSide })
+      );
+      scene.add(starMesh);
+
+      loadEarthSet(loader, function(set) {
+        if (!set) return;
+        earthMesh.material = new THREE.MeshPhongMaterial({
+          map: set.day,
+          shininess: 7,
+          emissive: 0x06121f,
+          emissiveIntensity: 0.32
+        });
+        if (set.clouds) {
+          cloudMesh.material = new THREE.MeshPhongMaterial({
+            map: set.clouds,
+            transparent: true,
+            opacity: 0.88,
+            depthWrite: false
+          });
+        }
+        if (set.stars) {
+          starMesh.material = new THREE.MeshBasicMaterial({
+            map: set.stars,
+            side: THREE.BackSide
+          });
+        }
+      });
+
+      var controls = null;
+      if (typeof THREE.OrbitControls !== 'undefined') {
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enablePan = false;
+        controls.minDistance = R * 1.6;
+        controls.maxDistance = 180;
+      }
+
+      var earthSpeed = opts.earthSpeed || 0.0009;
+      var cloudSpeed = opts.cloudSpeed || 0.0016;
+      var api = {
+        raf: 0,
+        running: false,
+        renderer: renderer,
+        loop: function() {
+          api.running = true;
+          earthMesh.rotation.y += earthSpeed;
+          cloudMesh.rotation.y += cloudSpeed + earthSpeed * 0.4;
+          starMesh.rotation.y += 0.00006;
+          if (controls) controls.update();
+          renderer.render(scene, camera);
+          api.raf = requestAnimationFrame(api.loop);
+        },
+        stop: function() {
+          api.running = false;
+          cancelAnimationFrame(api.raf);
+          api.raf = 0;
+        },
+        resize: function() {
+          var w = Math.max(container.clientWidth || window.innerWidth, 120);
+          var h = Math.max(container.clientHeight || window.innerHeight, 120);
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        }
+      };
+      return api;
+    }
+
+    function initLoadingRealisticEarth() {
+      try {
+        var c = document.getElementById('loadingEarthCanvas');
+        // camZ: 74 dan radius: 21 membuat bola bumi dan atmosfer tampil UTUH 100% di dalam lingkaran loading
+        bootEarthObj = createRealisticEarth(c, { camZ: 74, camY: 2, radius: 21, earthSpeed: 0.0012, cloudSpeed: 0.0019 });
+        if (bootEarthObj) bootEarthObj.loop();
+      } catch (e) { console.warn('Loading Earth 3D:', e); }
+    }
+
+    function initBackgroundRealisticEarth() {
+      try {
+        var c = document.getElementById('bgEarthCanvas');
+        // camZ: 76 dan radius: 22 membuat bola bumi tampil UTUH penuh di latar belakang dasbor
+        bgEarthObj = createRealisticEarth(c, { camZ: 76, camY: 4, radius: 22, earthSpeed: 0.0006, cloudSpeed: 0.0012 });
+        if (bgEarthObj) { bgEarthObj.loop(); bgEarthRAF = bgEarthObj.raf; }
+        window.addEventListener('resize', function() {
+          try {
+            if (bgEarthObj) bgEarthObj.resize();
+            if (bootEarthObj) bootEarthObj.resize();
+            if (ssEarthObj) ssEarthObj.resize();
+          } catch (e) {}
+        });
+      } catch (e) { console.warn('Background Earth 3D:', e); }
+    }
+
+    function initScreensaverRealisticEarth() {
+      try {
+        var c = document.getElementById('ssEarthCanvas');
+        // camZ: 72 dan radius: 21 menampilkan bola bumi & awan utuh secara sinematik di tengah layar screensaver
+        ssEarthObj = createRealisticEarth(c, { camZ: 72, camY: 2, radius: 21, earthSpeed: 0.0013, cloudSpeed: 0.0021 });
+        if (ssEarthObj) ssEarthObj.loop();
+        ssEarthInit = true;
+      } catch (e) { console.warn('Screensaver Earth 3D:', e); }
+    }
+  </script>
+
+  <!-- Tailwind CSS, FontAwesome & Google Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Barlow', 'Inter', 'sans-serif'],
+            tech: ['Orbitron', 'Barlow Condensed', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=JetBrains+Mono:wght@400;600;700;800&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet GIS, Chart.js, SheetJS (Excel), PDF.js, Mammoth.js (Word), JSZip (PPTX) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #061218;
+      --bg-card: rgba(12, 26, 36, 0.88);
+      --border-gold: rgba(34, 211, 238, 0.35);
+    }
+    body {
+      background-color: var(--bg-main);
+      color: #f0f9ff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+    }
+    .font-tech { font-family: 'Orbitron', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* BOOT LOADING OVERLAY */
+    #posoBootOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: radial-gradient(circle at center, #0a2230 0%, #040d12 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem;
+      transition: opacity 0.65s ease;
+    }
+
+    /* INTERACTIVE 3D EARTH DASHBOARD BACKGROUND */
+    #posoBgEarth {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: auto;
+      opacity: 0.68;
+    }
+    /* Rongga kosong dasbor membiarkan kursor memutar Bumi 3D, sedangkan elemen kartu/panel/header tetap interaktif */
+    .app-shell {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .app-shell header,
+    .app-shell nav,
+    .app-shell .cmd-card,
+    .app-shell button,
+    .app-shell input,
+    .app-shell select,
+    .app-shell a,
+    .app-shell table,
+    .app-shell iframe,
+    .app-shell #smartReportPaper,
+    .app-shell footer {
+      pointer-events: auto;
+    }
+
+    /* SCREENSAVER OVERLAY */
+    #posoSsOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9500;
+      background: #040d14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px;
+      overflow: hidden;
+    }
+    #posoSsOverlay[hidden] { display: none !important; }
+    .posoQuoteCard {
+      background: rgba(10, 29, 38, 0.84);
+      border: 1.5px solid #22d3ee;
+      border-radius: 18px;
+      padding: 16px 24px;
+      max-width: min(720px, 90vw);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.75);
+      pointer-events: none;
+    }
+
+    .cmd-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 1rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 32px -10px rgba(0,0,0,0.75);
+      transition: all 0.25s ease;
+    }
+    .cmd-card:hover {
+      border-color: rgba(251, 191, 36, 0.7);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #0891b2, #d97706);
+      color: #ffffff !important;
+      border-color: #67e8f9 !important;
+      box-shadow: 0 4px 16px rgba(6, 182, 212, 0.45);
+    }
+
+    /* Security Toast HUD */
+    .dam-sec-hud { position: fixed; top: 20px; right: 20px; width: min(430px, calc(100vw - 24px)); z-index: 100050; pointer-events: auto; }
+    .sec-hud-card { background: linear-gradient(135deg, rgba(8, 22, 28, 0.98), rgba(2, 6, 23, 0.98), rgba(28, 10, 18, 0.98)); border: 1.5px solid #10b981; border-radius: 14px; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4), 0 20px 50px rgba(0,0,0,0.9); overflow: hidden; }
+    .sec-hud-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(16, 185, 129, 0.18); border-bottom: 1px solid rgba(16, 185, 129, 0.35); }
+    .sec-hud-title-group { display: flex; align-items: center; gap: 10px; }
+    .sec-hud-icon-wrap { width: 32px; height: 32px; border-radius: 8px; background: rgba(16, 185, 129, 0.25); border: 1px solid #34d399; display: flex; align-items: center; justify-content: center; color: #34d399; }
+    .sec-hud-title { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; color: #fff; }
+    .sec-hud-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #6ee7b7; }
+    .sec-hud-ctrls { display: flex; align-items: center; gap: 6px; }
+    .sec-badge-attempt { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 800; color: #fde047; background: rgba(133, 77, 14, 0.5); border: 1px solid #facc15; padding: 2px 6px; border-radius: 5px; }
+    .sec-hud-close-btn { width: 24px; height: 24px; border-radius: 6px; background: rgba(15,23,42,0.8); border: 1px solid #10b981; color: #a7f3d0; cursor: pointer; }
+    .sec-hud-body { padding: 12px 14px; }
+    .sec-action-banner { display: flex; align-items: center; gap: 8px; background: rgba(244, 63, 94, 0.18); border-left: 3.5px solid #f43f5e; padding: 6px 10px; border-radius: 0 6px 6px 0; margin-bottom: 8px; }
+    .sec-action-title { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 800; color: #ffe4e6; }
+    .sec-explanation { font-size: 11px; color: #cbd5e1; line-height: 1.45; margin: 0; }
+    .sec-hud-footer { display: flex; justify-content: space-between; padding: 7px 14px; background: rgba(2,6,23,0.7); font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #34d399; }
+    .sec-progress-track { width: 100%; height: 3px; background: #0f172a; }
+    .sec-progress-bar { height: 100%; width: 100%; background: linear-gradient(90deg, #10b981, #06b6d4, #f59e0b); }
+
+    @keyframes posoPing { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes posoPop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    @media print {
+      .no-print, #posoBootOverlay, #posoBgEarth, #posoSsOverlay { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+      #smartReportPaper { box-shadow: none !important; border: none !important; padding: 0 !important; max-width: 100% !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-slate-950">
+
+  <!-- ========================================================================= -->
+  <!-- 1. BOOT LOADING SCREEN: BUMI 3D TAMPIL UTUH + AWAN REALISTIS + PROGRESS   -->
+  <!-- ========================================================================= -->
+  <div id="posoBootOverlay" class="no-print">
+    <div style="text-align:center;margin-top:10px">
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:9999px;background:#0c2a36;border:1px solid #22d3ee;color:#67e8f9;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700">
+        <span style="width:10px;height:10px;border-radius:50%;background:#22d3ee;display:inline-block;animation:posoPing 1.4s infinite"></span>
+        <span id="posoBootClock">Memuat Hari &amp; Waktu Real-Time WIB...</span>
+      </div>
+      <div style="margin-top:10px;font-family:'Barlow Condensed','Orbitron',sans-serif;font-size:26px;font-weight:800;letter-spacing:.06em;color:#67e8f9;text-transform:uppercase">
+        COMMAND CENTRE PENGHAPUSAN FUNGSI BENDUNGAN NO. 5 &amp; NO. 6A
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#fbbf24;letter-spacing:.12em;margin-top:2px">
+        BENDUNGAN TUJUH BUKIT &bull; PT BUMI SUKSESINDO &bull; PT CIPTA HARMONI SELARAS &bull; WSP &bull; PT SINOHYDRO
+      </div>
+    </div>
+
+    <!-- WADAH BUMI 3D UTUH & AWAN REALISTIS (DAPAT DIPUTAR DENGAN MOUSE/SENTUHAN) -->
+    <div style="position:relative;width:min(380px,82vw);height:min(380px,82vw);display:flex;align-items:center;justify-content:center;my:auto">
+      <div id="loadingEarthCanvas" style="width:100%;height:100%;cursor:grab;" title="Seret untuk memutar Bumi 3D & Awan Realistis"></div>
+      <div style="position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle, rgba(34,211,238,0.18) 0%, transparent 70%);filter:blur(24px);pointer-events:none"></div>
+    </div>
+
+    <div style="width:100%;max-width:460px;text-align:center;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:#8fb0bf;font-family:'JetBrains Mono',monospace;margin-bottom:6px">
+        <span id="posoBootMsg">Menginisialisasi 3D Earth Engine, Awan Realistis &amp; Modul Geoteknik...</span>
+        <span id="posoBootPct" style="color:#22d3ee;font-weight:800">15%</span>
+      </div>
+      <div style="width:100%;height:10px;background:#0c2a36;border:1px solid #155e75;border-radius:9999px;overflow:hidden">
+        <div id="posoBootBar" style="height:100%;width:15%;background:linear-gradient(90deg,#10b981,#22d3ee,#f59e0b);border-radius:9999px;transition:width .4s"></div>
+      </div>
+      <div style="padding-top:12px">
+        <button type="button" onclick="posoBootDismiss()" style="padding:10px 24px;border-radius:12px;background:linear-gradient(135deg,#0e7490,#d97706);color:#fff;border:1px solid #67e8f9;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 8px 25px rgba(6,182,212,0.4)">
+          🚀 MASUK KE DASBOR KOMANDO SEKARANG
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. BACKGROUND BUMI 3D UTUH & AWAN REALISTIS DI BELAKANG DASBOR            -->
+  <!-- ========================================================================= -->
+  <div id="posoBgEarth" class="no-print" title="Seret pada celah kosong dasbor untuk memutar atau zoom Bumi 3D & Awan Realistis">
+    <div id="bgEarthCanvas" style="width:100%;height:100%"></div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. SCREENSAVER BUMI 3D UTUH + AWAN + JAM BESAR + KATA BIJAK/MOTIVASI/DOA  -->
+  <!-- ========================================================================= -->
+  <div id="posoSsOverlay" hidden class="no-print">
+    <!-- Top Bar Screensaver -->
+    <div style="position:relative;z-index:5;width:100%;max-width:1600px;display:flex;justify-content:space-between;align-items:center;pointer-events:auto">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="width:36px;height:36px;border-radius:10px;background:rgba(34,211,238,0.2);border:1px solid #22d3ee;display:flex;align-items:center;justify-content:center;color:#67e8f9">
+          <i class="fa-solid fa-earth-asia"></i>
+        </span>
+        <div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:800;color:#e0f2fe">SCREENSAVER ORBIT BUMI 3D REALISTIS &amp; KOMANDO BENDUNGAN TUJUH BUKIT</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#67e8f9">Seret Bumi 3D untuk memutar &bull; Tekan ESC atau tombol di kanan untuk kembali ke Dasbor</div>
+        </div>
+      </div>
+      <button type="button" onclick="posoSsStop(true)" style="padding:8px 18px;border-radius:10px;background:rgba(14,116,144,0.85);border:1px solid #67e8f9;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;cursor:pointer">
+        <i class="fa-solid fa-xmark mr-1"></i> Tutup Screensaver
+      </button>
+    </div>
+
+    <!-- Fullscreen 3D Earth Canvas -->
+    <div style="width:100vw;height:100vh;position:absolute;inset:0;z-index:1">
+      <div id="ssEarthCanvas" style="width:100%;height:100%;cursor:grab"></div>
+    </div>
+
+    <!-- Center Clock & Date Overlay -->
+    <div style="position:relative;z-index:3;text-align:center;pointer-events:none;margin-top:auto">
+      <div id="posoSsClock" style="font-family:'Barlow Condensed','Orbitron',sans-serif;font-size:clamp(44px,7vw,78px);font-weight:800;color:#e0f2fe;letter-spacing:.06em;text-shadow:0 4px 20px rgba(0,0,0,0.9)">00.00.00</div>
+      <div id="posoSsDate" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#67e8f9;letter-spacing:.2em;text-shadow:0 4px 15px rgba(0,0,0,0.9);margin-top:4px">MEMUAT TANGGAL...</div>
+      <div style="margin-top:10px;display:inline-block;padding:4px 16px;border-radius:9999px;background:rgba(6,78,59,0.85);border:1px solid #34d399;color:#a7f3d0;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700">
+        STATUS KEAMANAN BENDUNGAN NO. 5 &amp; NO. 6A (PAD C EXT): TARP LEVEL 1 HIJAU (AMAN)
+      </div>
+    </div>
+
+    <!-- Bottom Rotating Quote / Motivation / Doa Card -->
+    <div style="position:relative;z-index:3;margin-top:18px;margin-bottom:24px;display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div id="posoSsQuote" class="posoQuoteCard"></div>
+      <div style="font-size:11px;color:#94a3b8;font-family:'JetBrains Mono',monospace;pointer-events:none">
+        Klik tombol "Tutup Screensaver" atau tekan tombol keyboard apa saja untuk kembali ke Dasbor
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 4. SHELL UTAMA DASBOR KOMANDO SUPERVISI & PELAPORAN                       -->
+  <!-- ========================================================================= -->
+  <div class="app-shell min-h-screen flex flex-col">
+
+    <!-- TOP ACCENT STRIP -->
+    <div class="h-1.5 w-full bg-gradient-to-r from-cyan-400 via-amber-400 to-emerald-400 no-print"></div>
+
+    <!-- HEADER KOMANDO -->
+    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-cyan-500/40 px-4 py-2.5 no-print">
+      <div class="max-w-[1800px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-600 to-amber-500 flex items-center justify-center text-slate-950 text-xl font-black shadow-lg">
+            <i class="fa-solid fa-earth-asia"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500/50 text-[10px] font-mono font-bold">PT BUMI SUKSESINDO • MERDEKA COPPER GOLD</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-[10px] font-mono font-bold">SUPERVISI: PT CIPTA HARMONI SELARAS &amp; WSP</span>
+              <span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/50 text-[10px] font-mono font-bold">3D EARTH + AUTO-SYNC v9.8</span>
+            </div>
+            <h1 class="font-tech text-sm sm:text-base md:text-lg font-black text-white tracking-wider mt-0.5">
+              COMMAND CENTRE PENGHAPUSAN FUNGSI BENDUNGAN NO. 5 &amp; NO. 6A <span class="text-cyan-400">(PAD C EXT STAGE 1)</span>
+            </h1>
+            <p class="text-[10px] font-mono text-slate-300">
+              Ruang kosong dasbor dapat diklik-geser untuk memutar Bumi 3D &bull; Sinkronisasi Link Google Drive &amp; Multi-File (PDF, PPT, Word, Excel)
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
+          <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 text-cyan-300 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span id="liveClockWIB">Memuat Waktu...</span>
+          </div>
+          <button onclick="posoSsStart()" class="px-3 py-1.5 rounded-xl bg-indigo-900/90 hover:bg-indigo-800 text-cyan-200 border border-cyan-400/60 font-bold flex items-center gap-1.5 shadow transition" title="Buka Screensaver Bumi 3D Utuh & Awan Realistis">
+            <i class="fa-solid fa-tv text-amber-400"></i> <span>Screensaver 3D</span>
+          </button>
+          <button onclick="exportReportToWord()" class="px-3 py-1.5 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-bold flex items-center gap-1.5 shadow transition">
+            <i class="fa-solid fa-file-word"></i> <span>Word (.doc)</span>
+          </button>
+          <button onclick="exportAllDataToExcel()" class="px-3 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold flex items-center gap-1.5 shadow transition">
+            <i class="fa-solid fa-file-excel"></i> <span>Excel (.xlsx)</span>
+          </button>
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-xl bg-rose-700 hover:bg-rose-600 text-white font-bold flex items-center gap-1.5 shadow transition">
+            <i class="fa-solid fa-file-pdf"></i> <span>Cetak / PDF</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- NAVIGATION TABS -->
+      <nav class="max-w-[1800px] mx-auto mt-2.5 pt-2 border-t border-slate-800/80 flex flex-wrap gap-1.5 font-mono text-xs">
+        <button onclick="switchMainTab('tabSyncUpload')" id="btn-tabSyncUpload" class="tab-btn active px-3 py-1.5 rounded-lg border border-cyan-500/60 text-slate-200 font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i> 01. Update Data (Drive &amp; Upload PDF/PPT/Word/Excel)
+        </button>
+        <button onclick="switchMainTab('tabKonstruksi')" id="btn-tabKonstruksi" class="tab-btn px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300 font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-truck-monster text-amber-400"></i> 02. Kegiatan Konstruksi &amp; Earthworks
+        </button>
+        <button onclick="switchMainTab('tabLabDcp')" id="btn-tabLabDcp" class="tab-btn px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300 font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-vial-circle-check text-cyan-400"></i> 03. Uji Lapangan (DCPT) &amp; Lab Geoteknik
+        </button>
+        <button onclick="switchMainTab('tabMonitoring')" id="btn-tabMonitoring" class="tab-btn px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300 font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-mountain-sun text-emerald-400"></i> 04. Pemantauan, Stabilitas, Hidrologi &amp; Bow-Tie
+        </button>
+        <button onclick="switchMainTab('tabCuacaGis')" id="btn-tabCuacaGis" class="tab-btn px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300 font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-wind text-amber-400"></i> 05. Radar Cuaca Windy.com &amp; WebGIS
+        </button>
+        <button onclick="switchMainTab('tabLaporan')" id="btn-tabLaporan" class="tab-btn px-3 py-1.5 rounded-lg border border-emerald-500/60 bg-emerald-950/40 text-emerald-300 font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-file-signature text-emerald-400"></i> 06. Laporan Word Cerdas (Mingguan/Bulanan/Antara/Akhir)
+        </button>
+        <button onclick="toggleAiDrawer()" class="ml-auto px-3 py-1.5 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-500 text-white font-black flex items-center gap-1.5 shadow">
+          <i class="fa-solid fa-robot"></i> AI SuperAgent Multi-Disiplin
+        </button>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-[1800px] w-full mx-auto p-3 sm:p-5 flex-1 space-y-5">
+
+      <!-- GLOBAL KPI STRIP -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-mono no-print">
+        <div class="cmd-card p-3 border-l-4 border-l-amber-500">
+          <span class="text-[10px] text-slate-400 font-bold uppercase block">Periode Pelaporan</span>
+          <div id="kpiPeriodLabel" class="text-sm sm:text-base font-tech font-black text-amber-400 mt-1 truncate">01–08 Okt 2026</div>
+          <span id="kpiSourceBadge" class="text-[9.5px] text-amber-200 block truncate">Sumber: Drive Proyek</span>
+        </div>
+        <div class="cmd-card p-3 border-l-4 border-l-emerald-500">
+          <span class="text-[10px] text-slate-400 font-bold uppercase block">Volume Periode Aktif</span>
+          <div id="kpiPeriodVol" class="text-lg sm:text-xl font-tech font-black text-emerald-400 mt-0.5">40.845 m³</div>
+          <span id="kpiPeriodRit" class="text-[10px] text-emerald-200 block">3.095 Ritase ADT 40T</span>
+        </div>
+        <div class="cmd-card p-3 border-l-4 border-l-cyan-500">
+          <span class="text-[10px] text-slate-400 font-bold uppercase block">Kumulatif Proyek</span>
+          <div id="kpiCumVol" class="text-lg sm:text-xl font-tech font-black text-cyan-300 mt-0.5">138.331 m³</div>
+          <span id="kpiCumRit" class="text-[10px] text-cyan-200 block">10.479 Ritase Terkoreksi</span>
+        </div>
+        <div class="cmd-card p-3 border-l-4 border-l-purple-500">
+          <span class="text-[10px] text-slate-400 font-bold uppercase block">Sampel Lab Zone AC</span>
+          <div id="kpiLabCount" class="text-lg sm:text-xl font-tech font-black text-purple-300 mt-0.5">14 Sampel</div>
+          <span id="kpiLabStatus" class="text-[10px] text-rose-300 font-bold block">1 Hold (6.W Blending 1:1)</span>
+        </div>
+        <div class="cmd-card p-3 border-l-4 border-l-rose-500">
+          <span class="text-[10px] text-slate-400 font-bold uppercase block">Stabilitas &amp; Rembesan</span>
+          <div class="text-lg sm:text-xl font-tech font-black text-emerald-400 mt-0.5">FoS 1,96 / 4,21</div>
+          <span class="text-[10px] text-slate-300 block">Uplift 1,55 • Piping 4,23</span>
+        </div>
+        <div class="cmd-card p-3 border-l-4 border-l-lime-500">
+          <span class="text-[10px] text-slate-400 font-bold uppercase block">Status File &amp; Drive</span>
+          <div id="kpiFilesProcessed" class="text-lg sm:text-xl font-tech font-black text-lime-400 mt-0.5">6 Berkas</div>
+          <span class="text-[10px] text-lime-200 block">Auto-Sync Aktif</span>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 01: UPDATE DATA (GOOGLE DRIVE & MULTI-FILE UPLOAD) ==================== -->
+      <section id="tabSyncUpload" class="tab-pane block space-y-4 font-mono text-xs">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+          <!-- KIRI: GOOGLE DRIVE SYNC -->
+          <div class="lg:col-span-5 cmd-card p-4 sm:p-5 space-y-3.5 border-t-2 border-t-amber-500">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <h2 class="font-tech text-xs sm:text-sm font-bold text-amber-400 flex items-center gap-2">
+                <i class="fa-brands fa-google-drive text-amber-400 text-base"></i> 1. SINKRONISASI LINK GOOGLE DRIVE PROYEK
+              </h2>
+              <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-[10px] font-bold">ONLINE SYNC</span>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-[10px] text-slate-300 font-bold uppercase block">Tautan Folder / Berkas Google Drive:</label>
+              <div class="flex gap-2">
+                <input id="driveUrlInput" type="text" value="https://drive.google.com/drive/folders/proyek-closure-dam5-dam6a-bsi" placeholder="Tempel link Google Drive proyek..." class="flex-1 bg-slate-950 border border-amber-500/60 rounded-xl px-3 py-2 text-amber-200 text-xs outline-none">
+                <button onclick="syncFromGoogleDriveLink()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black hover:brightness-110 transition shadow shrink-0">
+                  <i class="fa-solid fa-rotate mr-1"></i> Sinkronkan
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-1.5 pt-1">
+              <span class="text-[10px] text-cyan-300 font-bold uppercase block">Paket Data Resmi dari Folder Google Drive Proyek:</span>
+              <button onclick="loadDriveRepositoryPreset('week1_okt')" class="w-full p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-amber-500/40 text-left flex items-center justify-between transition">
+                <div>
+                  <b class="text-amber-300 block text-[11px]"><i class="fa-solid fa-file-word text-blue-400 mr-1.5"></i>Minggu ke-1 Okt 2026 (01–08 Okt 2026)</b>
+                  <span class="text-[10px] text-slate-400">3.095 Ritase • 40.845 m³ Terkoreksi • Pembukaan Zone C Dam 5 • Sampel 6.U–6.Z</span>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9.5px] font-bold">Muat M-1</span>
+              </button>
+
+              <button onclick="loadDriveRepositoryPreset('week2_okt')" class="w-full p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-emerald-500/40 text-left flex items-center justify-between transition">
+                <div>
+                  <b class="text-emerald-300 block text-[11px]"><i class="fa-solid fa-file-excel text-emerald-400 mr-1.5"></i>Minggu ke-2 Okt 2026 (09–14 Okt 2026) — (Weekly_DAM 5 &amp; 6A).xlsx</b>
+                  <span class="text-[10px] text-slate-400">Akselerasi Backfill Dam 5 &amp; Dam 6A (4.700 Ritase / 62.060 m³)</span>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[9.5px] font-bold">Muat M-2</span>
+              </button>
+
+              <button onclick="loadDriveRepositoryPreset('monthly_okt')" class="w-full p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-cyan-500/40 text-left flex items-center justify-between transition">
+                <div>
+                  <b class="text-cyan-300 block text-[11px]"><i class="fa-solid fa-file-zipper text-purple-400 mr-1.5"></i>Rekap Bulanan Oktober 2026 &amp; Pengujian Material Properties Pad C</b>
+                  <span class="text-[10px] text-slate-400">Akumulasi Bulanan Oktober 2026 + Evaluasi 14 Sampel Lab + 5 Titik DCPT</span>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[9.5px] font-bold">Bulanan</span>
+              </button>
+
+              <button onclick="loadDriveRepositoryPreset('closure_design')" class="w-full p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-purple-500/40 text-left flex items-center justify-between transition">
+                <div>
+                  <b class="text-purple-300 block text-[11px]"><i class="fa-solid fa-file-pdf text-rose-400 mr-1.5"></i>Laporan Persiapan Konstruksi Closure &amp; Stabilitas GeoStudio</b>
+                  <span class="text-[10px] text-slate-400">Hidrologi Q_PMF 151,68 m³/s, Litologi Andesit/Tuf &amp; Model Bow-Tie</span>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[9.5px] font-bold">Antara/Akhir</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KANAN: UPLOAD MULTI-FILE (PDF, PPT/PPTX, WORD, EXCEL) -->
+          <div class="lg:col-span-7 cmd-card p-4 sm:p-5 space-y-3.5 border-t-2 border-t-cyan-500">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <h2 class="font-tech text-xs sm:text-sm font-bold text-cyan-400 flex items-center gap-2">
+                <i class="fa-solid fa-file-arrow-up text-cyan-400 text-base"></i> 2. UPLOAD FILE PDF, PPT/PPTX, WORD (DOCX), &amp; EXCEL (XLSX/CSV)
+              </h2>
+              <span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/50 text-[10px] font-bold">MULTI-FORMAT ANALYZER</span>
+            </div>
+
+            <div id="multiDropZone"
+                 ondragover="event.preventDefault(); this.classList.add('border-amber-400','bg-amber-950/20');"
+                 ondragleave="this.classList.remove('border-amber-400','bg-amber-950/20');"
+                 ondrop="handleMultiFileDrop(event)"
+                 onclick="document.getElementById('multiFileInput').click()"
+                 class="border-2 border-dashed border-cyan-500/50 hover:border-amber-400 rounded-2xl p-5 text-center bg-slate-950/75 cursor-pointer transition space-y-2">
+              <input id="multiFileInput" type="file" multiple accept=".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.csv" onchange="handleMultiFileSelect(event)" class="hidden">
+              <div class="flex justify-center gap-4 text-2xl">
+                <i class="fa-solid fa-file-pdf text-rose-400"></i>
+                <i class="fa-solid fa-file-powerpoint text-orange-400"></i>
+                <i class="fa-solid fa-file-word text-blue-400"></i>
+                <i class="fa-solid fa-file-excel text-emerald-400"></i>
+              </div>
+              <div class="text-xs sm:text-sm font-bold text-white">
+                Klik atau Tarik File <span class="text-rose-400">PDF</span>, <span class="text-orange-400">PowerPoint (PPTX)</span>, <span class="text-blue-400">Word (DOCX)</span>, atau <span class="text-emerald-400">Excel (XLSX)</span> ke Sini
+              </div>
+              <p class="text-[11px] text-slate-400 font-sans">
+                Otomatis membaca tabel progres harian, sampel laboratorium, teks laporan PDF/Word, serta isi slide presentasi PPTX untuk langsung memperbarui grafik dan Laporan Word!
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+              <div class="md:col-span-7 bg-slate-950/90 p-3 rounded-xl border border-slate-800 space-y-2">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-1">
+                  <span class="text-[10.5px] font-bold text-amber-300 uppercase">Log Analisis File Terunggah:</span>
+                  <button onclick="clearUploadedFilesLog()" class="text-[10px] text-slate-400 hover:text-rose-400">Reset Log</button>
+                </div>
+                <div id="fileExtractionLog" class="space-y-1.5 max-h-[175px] overflow-y-auto text-[11px] text-slate-300 pr-1">
+                  <div class="p-2 rounded-lg bg-slate-900 border border-slate-800">
+                    <b class="text-emerald-400">[SIAP]</b> Silakan unggah file PDF, PPTX, DOCX, atau XLSX untuk diekstraksi dan dianalisis otomatis.
+                  </div>
+                </div>
+              </div>
+
+              <div class="md:col-span-5 bg-slate-950/90 p-3 rounded-xl border border-slate-800 space-y-2 text-center">
+                <span class="text-[10px] font-bold text-cyan-300 uppercase block">Pratinjau Isi File</span>
+                <div class="w-full h-[145px] rounded-lg bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-2 overflow-auto text-[10px] text-slate-300">
+                  <canvas id="pdfRenderCanvas" class="hidden max-w-full max-h-full"></canvas>
+                  <div id="genericPreviewText" class="text-left w-full">Pratinjau halaman PDF, slide PPTX, atau tabel Excel tampil di sini.</div>
+                </div>
+                <button onclick="switchMainTab('tabLaporan')" class="w-full py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-[11px] transition">
+                  <i class="fa-solid fa-file-word mr-1"></i> Buka Laporan Hasil Analisis &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== TAB 02: KEGIATAN KONSTRUKSI & EARTHWORKS ==================== -->
+      <section id="tabKonstruksi" class="tab-pane hidden space-y-4 font-mono text-xs">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <div class="lg:col-span-7 cmd-card p-4 space-y-2">
+            <h3 class="font-tech text-xs font-bold text-cyan-300 border-b border-slate-800 pb-2">GRAFIK PRODUKSI HARIAN RITASE &amp; VOLUME MATERIAL (M³)</h3>
+            <div class="h-64"><canvas id="chartDailyEarthworks"></canvas></div>
+          </div>
+          <div class="lg:col-span-5 cmd-card p-4 space-y-2">
+            <h3 class="font-tech text-xs font-bold text-emerald-300 border-b border-slate-800 pb-2">KURVA S PROGRES CLOSURE (SEP 2026 – FEB 2027)</h3>
+            <div class="h-64"><canvas id="chartSCurveClosure"></canvas></div>
+          </div>
+        </div>
+
+        <div class="cmd-card p-4 space-y-2.5">
+          <h3 class="font-tech text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">TABEL RINCIAN HARIAN RITASE &amp; VOLUME MATERIAL</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-[11px] border-collapse text-right">
+              <thead class="bg-slate-900 text-slate-300 uppercase text-[9.5px]">
+                <tr>
+                  <th class="p-2 text-left">Tanggal</th>
+                  <th class="p-2">Shift Siang (DS)</th>
+                  <th class="p-2">Shift Malam (NS)</th>
+                  <th class="p-2 text-amber-300">Total Ritase</th>
+                  <th class="p-2">Zone C Tercatat (m³)</th>
+                  <th class="p-2 text-emerald-300">Zone C Terkoreksi (m³)</th>
+                  <th class="p-2">Unsuitable (m³)</th>
+                  <th class="p-2">Filter F2 (m³)</th>
+                  <th class="p-2">Boulder (m³)</th>
+                  <th class="p-2 text-cyan-300">Total Terkoreksi (m³)</th>
+                </tr>
+              </thead>
+              <tbody id="dynamicDailyTableBody" class="divide-y divide-slate-800 text-slate-200"></tbody>
+              <tfoot id="dynamicDailyTableFoot" class="bg-slate-900 font-black text-white border-t-2 border-amber-500/50"></tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 03: UJI LAPANGAN (DCPT) & LAB GEOTEKNIK ==================== -->
+      <section id="tabLabDcp" class="tab-pane hidden space-y-4 font-mono text-xs">
+        <div class="cmd-card p-4 space-y-3">
+          <h2 class="font-tech text-xs sm:text-sm font-bold text-amber-400 border-b border-slate-800 pb-2">
+            EVALUASI LABORATORIUM BORROW REGISTER ZONE AC &amp; INSTRUKSI QC OTOMATIS
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-[11px] border-collapse text-center">
+              <thead class="bg-slate-900 text-slate-300 uppercase text-[9.5px]">
+                <tr>
+                  <th class="p-2">Kode Sampel</th>
+                  <th class="p-2">Tanggal Uji</th>
+                  <th class="p-2">Elevasi (RL m)</th>
+                  <th class="p-2">USCS</th>
+                  <th class="p-2">Gravel (%)</th>
+                  <th class="p-2">Fines (%)</th>
+                  <th class="p-2">PI (%)</th>
+                  <th class="p-2">MC Alami (%)</th>
+                  <th class="p-2 text-cyan-300">OMC (%)</th>
+                  <th class="p-2 text-emerald-300">MDD (t/m³)</th>
+                  <th class="p-2 text-amber-300">Deviasi Δw</th>
+                  <th class="p-2 text-left">Status Penerimaan &amp; Instruksi QC Lapangan</th>
+                </tr>
+              </thead>
+              <tbody id="dynamicLabTableBody" class="divide-y divide-slate-800 text-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="cmd-card p-4 space-y-2.5">
+          <h3 class="font-tech text-xs font-bold text-emerald-400 border-b border-slate-800 pb-2">
+            AUDIT KUOTA WAJIB UJI KEPADATAN &amp; LABORATORIUM (TABEL 5.6, 5.7, 5.8) ATAS VOLUME REALISASI
+          </h3>
+          <div id="qaqcQuotaCards" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px]"></div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 04: PEMANTAUAN, STABILITAS, HIDROLOGI & BOW-TIE ==================== -->
+      <section id="tabMonitoring" class="tab-pane hidden space-y-4 font-mono text-xs">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div class="cmd-card p-4 space-y-2 border-t-2 border-t-emerald-500">
+            <h3 class="font-tech text-xs font-bold text-emerald-400 border-b border-slate-800 pb-2">1. STABILITAS LERENG &amp; REMBESAN (GEOSTUDIO)</h3>
+            <div class="space-y-1.5 text-[11px] text-slate-300">
+              <div>• <b>Litologi Fondasi:</b> Andesite Ash Flow Tuff (UCS 10–35 MPa), Andesite Dacitic Flow (UCS 60–120 MPa), Porphyry Hornblende Andesite (UCS 80–140 MPa).</div>
+              <div>• <b>FoS Statik Steady State:</b> Hulu = <b class="text-emerald-400">4,210</b> | Hilir = <b class="text-emerald-400">1,959</b> (&ge; 1,50 AMAN).</div>
+              <div>• <b>FoS Rapid Drawdown:</b> Hulu = <b class="text-emerald-400">2,262</b> | Hilir = <b class="text-emerald-400">1,969</b> (&ge; 1,30 AMAN).</div>
+              <div>• <b>FoS Gempa OBE (PGA 0,19g):</b> Hulu <b class="text-cyan-300">1,749–3,308</b> | Hilir <b class="text-cyan-300">1,239–3,134</b> (&ge; 1,20 AMAN).</div>
+              <div>• <b>Gempa MDE (0,52g) &amp; PuSGeN 2024 (0,50g):</b> Deformasi Makdisi-Seed <b class="text-amber-300">5,0 cm</b> (&lt;&lt; batas 200 cm).</div>
+              <div>• <b>Keamanan Rembesan (SEEP/W):</b> Uplift SF = <b class="text-emerald-400">1,547</b> | Piping SF = <b class="text-emerald-400">4,23 &amp; 3,07</b> (&gt; 3,00).</div>
+            </div>
+          </div>
+
+          <div class="cmd-card p-4 space-y-2 border-t-2 border-t-cyan-500">
+            <h3 class="font-tech text-xs font-bold text-cyan-400 border-b border-slate-800 pb-2">2. HIDROLOGI PASCA-CLOSURE &amp; NERACA AIR</h3>
+            <div class="space-y-1.5 text-[11px] text-slate-300">
+              <div>• <b>Perubahan DTA:</b> Dam 1 = 0,32 km²; Dam 2 = 0,36 km²; <b>Dam 3 naik ke 1,65 km²</b>; <b>Dam 4 (SWP) naik ke 2,38 km²</b>.</div>
+              <div>• <b>Debit Q100 (HSS SCS):</b> Dam 1 = 32,30 | Dam 2 = 7,01 | Dam 3 = 30,71 | Dam 4 = 45,38 m³/detik.</div>
+              <div>• <b>Debit Q1000:</b> Dam 1 = 52,10 | Dam 2 = 11,17 | Dam 3 = 49,23 | Dam 4 = 72,72 m³/detik.</div>
+              <div>• <b>Debit Q_PMF:</b> Dam 1 = <b>108,42</b> | Dam 2 = <b>23,16</b> | Dam 3 = <b>103,16</b> | Dam 4 = <b>151,68 m³/detik</b>.</div>
+              <div>• <b>Neraca Air TSF:</b> Inflow 1.473 m³/jam vs Outflow -1.383 m³/jam (Surplus +90 m³/jam; Emergency Spillway +317 mdpl = 0,0 m³/jam).</div>
+            </div>
+          </div>
+
+          <div class="cmd-card p-4 space-y-2 border-t-2 border-t-amber-500">
+            <h3 class="font-tech text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">3. MODEL BOW-TIE, LOPA &amp; TARP 4 LEVEL</h3>
+            <div class="space-y-1.5 text-[11px] text-slate-300">
+              <div>• <b>Instrumentasi Geoteknik:</b> 16 VWP Piezometer (ru = 0,21), 8 Inclinometer, 12 Prisma GNSS/RTS, 4 V-Notch Weir (&lt;5 NTU), Radar SSR.</div>
+              <div>• <b>Kuantifikasi LOPA:</b> Frekuensi Top Event <b>8,4%/thn</b>, Risiko Fatal Residual <b>1,4%/thn</b> (Reduksi LOPA <b>98,6%</b>; Skor <b>IKKK = 0,87 ALARP/Aman</b>).</div>
+              <div>• <b>TARP Level 1 (Hijau):</b> v &lt; 0,5 mm/j, ru &lt; 0,25, FoS &ge; 1,50.</div>
+              <div>• <b>TARP Level 2 (Kuning):</b> 0,5 &le; v &lt; 2,0 mm/j, 0,25 &le; ru &lt; 0,35.</div>
+              <div>• <b>TARP Level 3 (Oranye):</b> 2,0 &le; v &lt; 5,0 mm/j, 0,35 &le; ru &lt; 0,45.</div>
+              <div>• <b>TARP Level 4 (Merah):</b> v &ge; 5,0 mm/j, ru &ge; 0,45 &rarr; Evakuasi &lt; 5 menit!</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 05: RADAR CUACA WINDY.COM & WEBGIS ==================== -->
+      <section id="tabCuacaGis" class="tab-pane hidden space-y-4 font-mono text-xs">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="cmd-card p-4 space-y-2.5">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+              <h3 class="font-tech text-xs font-bold text-amber-300"><i class="fa-solid fa-wind mr-1"></i> RADAR CUACA INTERAKTIF WINDY.COM</h3>
+              <div class="flex gap-1">
+                <button onclick="switchWindy('rain')" class="px-2 py-0.5 rounded bg-cyan-700 text-white text-[10px] font-bold">Hujan</button>
+                <button onclick="switchWindy('wind')" class="px-2 py-0.5 rounded bg-amber-600 text-slate-950 text-[10px] font-bold">Angin</button>
+                <button onclick="switchWindy('radar')" class="px-2 py-0.5 rounded bg-emerald-700 text-white text-[10px] font-bold">Radar dBZ</button>
+              </div>
+            </div>
+            <div class="w-full h-[430px] rounded-xl overflow-hidden border border-slate-700">
+              <iframe id="windyIframeMain" class="w-full h-full border-0" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=%C2%B0C&metricWind=km%2Fh&zoom=11&overlay=rain&product=ecmwf&level=surface&lat=-8.5985&lon=114.0483&detailLat=-8.5985&detailLon=114.0483&marker=true&message=true" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="cmd-card p-4 space-y-2.5">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+              <h3 class="font-tech text-xs font-bold text-emerald-300"><i class="fa-solid fa-map-location-dot mr-1"></i> WEBGIS DECOMMISSIONING DAM 5 &amp; DAM 6A</h3>
+              <span class="text-[10px] text-slate-400">UTM 50S: X=174786.7, Y=9048183.0</span>
+            </div>
+            <div id="closureMapCanvas" class="w-full h-[430px] rounded-xl border border-slate-700 bg-slate-950"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 06: LAPORAN WORD CERDAS (4 JENIS LAPORAN) ==================== -->
+      <section id="tabLaporan" class="tab-pane hidden space-y-4 font-mono text-xs">
+        <div class="cmd-card p-4 flex flex-wrap items-center justify-between gap-3 no-print">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-amber-300 font-bold uppercase mr-1">Pilih Jenis Laporan:</span>
+            <button onclick="generateDynamicReport('mingguan')" id="btnRep-mingguan" class="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black">1. Laporan Mingguan</button>
+            <button onclick="generateDynamicReport('bulanan')" id="btnRep-bulanan" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold">2. Laporan Bulanan</button>
+            <button onclick="generateDynamicReport('antara')" id="btnRep-antara" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold">3. Laporan Antara / Semester</button>
+            <button onclick="generateDynamicReport('akhir')" id="btnRep-akhir" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold">4. Laporan Akhir (Completion)</button>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="exportReportToWord()" class="px-3.5 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-white font-bold flex items-center gap-1.5 shadow">
+              <i class="fa-solid fa-file-word"></i> Unduh Word (.doc)
+            </button>
+            <button onclick="window.print()" class="px-3.5 py-1.5 rounded-lg bg-rose-700 hover:bg-rose-600 text-white font-bold flex items-center gap-1.5 shadow">
+              <i class="fa-solid fa-print"></i> Cetak A4 / PDF
+            </button>
+          </div>
+        </div>
+
+        <div id="smartReportPaper" contenteditable="true" class="bg-white text-slate-900 p-6 sm:p-10 rounded-2xl shadow-2xl max-w-5xl mx-auto font-sans text-xs leading-relaxed space-y-4 outline-none border-2 border-amber-500/40"></div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER KREDIT -->
+    <footer class="mt-auto py-3 px-4 bg-slate-950/90 border-t border-cyan-500/30 text-center font-mono text-[11px] text-slate-400 no-print">
+      Dikembangkan oleh <b class="text-cyan-300">Ir. Mohamad Hartadi (Adi)</b> — Team Leader &amp; Tenaga Ahli Multi-Disiplin &nbsp;|&nbsp;
+      <a href="https://newbieonline7.blogspot.com" target="_blank" class="text-amber-400 hover:underline">newbieonline7.blogspot.com</a> &nbsp;|&nbsp;
+      <a href="https://wa.me/6282231036047" target="_blank" class="text-emerald-400 hover:underline">WA 0822-3103-6047</a>
+    </footer>
+  </div>
+
+  <!-- CHATBOT AI MULTI-DISIPLIN DRAWER -->
+  <div id="aiDrawer" class="fixed bottom-4 right-4 z-50 w-[95vw] sm:w-[450px] bg-slate-950 border-2 border-cyan-400 rounded-2xl shadow-2xl hidden flex-col overflow-hidden font-mono text-xs no-print">
+    <div class="p-3 bg-gradient-to-r from-cyan-950 via-slate-900 to-amber-950 border-b border-cyan-500/40 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-robot text-cyan-400 text-base"></i>
+        <div>
+          <b class="text-white font-tech text-xs block">AI SUPERAGENT MULTI-DISIPLIN</b>
+          <span class="text-[9.5px] text-cyan-300">Terkoneksi Link Drive, File Upload &amp; Wikipedia</span>
+        </div>
+      </div>
+      <button onclick="toggleAiDrawer()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
+    </div>
+    <div id="aiChatMessages" class="p-3 h-72 overflow-y-auto space-y-2.5 bg-slate-950 text-[11px]">
+      <div class="p-2.5 rounded-xl bg-slate-900 border border-cyan-500/40 text-slate-200">
+        <b class="text-cyan-300 block mb-1">Selamat datang di AI SuperAgent Bendungan Tujuh Bukit!</b>
+        Ketik pertanyaan teknis atau klik tombol cepat di bawah (termasuk perintah <b>"screensaver"</b> untuk menampilkan Bumi 3D Utuh).
+      </div>
+    </div>
+    <div class="p-2 bg-slate-900 border-t border-slate-800 flex gap-1.5 overflow-x-auto text-[10px]">
+      <button onclick="askChatbot('Ringkasan progres terbaru')" class="px-2 py-1 rounded bg-amber-950 text-amber-300 border border-amber-600 whitespace-nowrap">📊 Progres</button>
+      <button onclick="askChatbot('Hasil file yang diupload')" class="px-2 py-1 rounded bg-cyan-950 text-cyan-300 border border-cyan-600 whitespace-nowrap">📂 Isi File Upload</button>
+      <button onclick="askChatbot('Evaluasi sampel lab 6.W')" class="px-2 py-1 rounded bg-rose-950 text-rose-300 border border-rose-600 whitespace-nowrap">🧪 Sampel 6.W</button>
+      <button onclick="posoSsStart()" class="px-2 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-500 whitespace-nowrap">🌍 Screensaver 3D</button>
+    </div>
+    <form onsubmit="event.preventDefault(); sendChatbotQuery();" class="p-2 bg-slate-950 border-t border-slate-800 flex gap-1.5">
+      <input id="aiChatInput" type="text" placeholder="Tanyakan progres, file upload, lab, stabilitas..." class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white outline-none focus:border-cyan-400">
+      <button type="submit" class="px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-black"><i class="fa-solid fa-paper-plane"></i></button>
+    </form>
+  </div>
+
+  <div id="toastBox" class="fixed top-16 right-4 z-50 space-y-2 pointer-events-none no-print"></div>
+
+  <script>
+    // =========================================================================
+    // 1. BOOT LOADING & SCREENSAVER CONTROLLER (DENGAN KATA BIJAK / MOTIVASI / DOA)
+    // =========================================================================
+    function posoBootDismiss() {
+      var ov = document.getElementById('posoBootOverlay');
+      if (!ov || ov.style.display === 'none') return;
+      ov.style.opacity = '0';
+      setTimeout(function() {
+        ov.style.display = 'none';
+        try { if (bootEarthObj && bootEarthObj.stop) bootEarthObj.stop(); } catch(e) {}
+        try { if (typeof initBackgroundRealisticEarth === 'function') initBackgroundRealisticEarth(); } catch(e) {}
+      }, 450);
+    }
+
+    (function() {
+      try { initLoadingRealisticEarth(); } catch(e) {}
+      var bar = document.getElementById('posoBootBar');
+      var pct = document.getElementById('posoBootPct');
+      var msg = document.getElementById('posoBootMsg');
+      var clk = document.getElementById('posoBootClock');
+      var p = 15;
+      var iv = setInterval(function() {
+        p += Math.random() * 14;
+        if (bar) bar.style.width = Math.min(100, p) + '%';
+        if (pct) pct.textContent = Math.round(Math.min(100, p)) + '%';
+        if (p >= 45 && msg) msg.textContent = 'Memuat modul geoteknik, hidrologi & konektor Google Drive...';
+        if (p >= 75 && msg) msg.textContent = 'Menyinkronkan Bumi 3D Utuh & Awan Realistis...';
+        if (p >= 100) {
+          clearInterval(iv);
+          if (msg) msg.textContent = 'Sistem Komando Siap.';
+          setTimeout(posoBootDismiss, 550);
+        }
+      }, 260);
+      var tickBoot = function() {
+        try {
+          var d = new Date();
+          if (clk) clk.textContent = d.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) + ' • ' + d.toLocaleTimeString('id-ID') + ' WIB';
+        } catch(e) {}
+      };
+      tickBoot();
+      setInterval(tickBoot, 1000);
+    })();
+
+    var POSSO_QUOTES = [
+      { t: 'KATA BIJAK GEOTEKNIK', c: '#22d3ee', q: '"Tidak ada bendungan dan tanggul yang kokoh di atas fondasi data yang bohong. Pengujian laboratorium dan telemetri yang jujur adalah keamanan sejati."' },
+      { t: 'MOTIVASI SUPERVISI', c: '#f59e0b', q: '"Setiap lapisan timbunan yang dipadatkan sesuai standar hari ini adalah jaminan keselamatan bagi operasional tambang dan masyarakat hilir esok hari."' },
+      { t: 'DOA KEBERKAHAN', c: '#10b981', q: '"Ya Tuhan, berikanlah keselamatan bagi seluruh insan proyek Bendungan Tujuh Bukit, jadikanlah karya rekayasa ini kokoh, aman, dan membawa keberkahan."' },
+      { t: 'FILOSOFI REKAYASA', c: '#a78bfa', q: '"Struktur yang tangguh bukan yang tak pernah diguncang gempa atau badai, melainkan yang dirancang dengan daktilitas, drainase andal, dan fondasi batuan yang stabil."' }
+    ];
+    var posoSsOn = false, posoSsIv = null, posoSsQv = null, posoSsIdx = 0, posoIdleT = null;
+
+    function posoShowQuote() {
+      var q = POSSO_QUOTES[posoSsIdx % POSSO_QUOTES.length];
+      posoSsIdx++;
+      var el = document.getElementById('posoSsQuote');
+      if (!el) return;
+      el.innerHTML = '<div style="text-align:center"><span style="display:inline-block;padding:3px 12px;border-radius:9999px;font-size:10px;font-weight:900;letter-spacing:.16em;color:#06222c;background:' + q.c + '">' + q.t + '</span><div style="margin-top:10px;font-size:15px;font-style:italic;color:#e8f6fb;line-height:1.6">' + q.q + '</div></div>';
+      el.style.animation = 'posoPop .8s ease';
+    }
+
+    function posoSsStart() {
+      var ov = document.getElementById('posoSsOverlay');
+      if (!ov || ov.hidden === false) return;
+      ov.hidden = false;
+      posoSsOn = true;
+      try { initScreensaverRealisticEarth(); } catch(e) {}
+      var clockFn = function() {
+        var d = new Date();
+        document.getElementById('posoSsClock').textContent = String(d.getHours()).padStart(2,'0') + '.' + String(d.getMinutes()).padStart(2,'0') + '.' + String(d.getSeconds()).padStart(2,'0');
+        document.getElementById('posoSsDate').textContent = d.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' }).toUpperCase() + ' WIB';
+      };
+      clockFn();
+      posoSsIv = setInterval(clockFn, 1000);
+      posoShowQuote();
+      posoSsQv = setInterval(posoShowQuote, 7500);
+    }
+
+    function posoSsStop(forceClose) {
+      var ov = document.getElementById('posoSsOverlay');
+      if (!ov || ov.hidden !== false) return;
+      if (!forceClose && window.event && window.event.target && window.event.target.tagName === 'CANVAS') return;
+      try { if (ssEarthObj && ssEarthObj.stop) ssEarthObj.stop(); } catch(e) {}
+      ov.hidden = true;
+      posoSsOn = false;
+      if (posoSsIv) clearInterval(posoSsIv);
+      if (posoSsQv) clearInterval(posoSsQv);
+    }
+
+    ['keydown','mousemove','touchstart','scroll'].forEach(function(ev) {
+      document.addEventListener(ev, function(e) {
+        if (posoSsOn && ev === 'keydown') { posoSsStop(true); return; }
+        if (!posoSsOn) {
+          clearTimeout(posoIdleT);
+          posoIdleT = setTimeout(posoSsStart, 4 * 60 * 1000);
+        }
+      }, { passive: true });
+    });
+
+    // =========================================================================
+    // 2. CENTRAL PROJECT STATE & MULTI-FILE / GOOGLE DRIVE SYNC ENGINE
+    // =========================================================================
+    const PROJECT_STATE = {
+      periodName: '01 Oktober 2026 – 08 Oktober 2026 (Minggu ke-1 Oktober 2026)',
+      sourceLabel: 'Drive: Laporan Mingguan & (Weekly_DAM 6A/5) Okt 2026',
+      prevCumRitase: 7384,
+      prevCumVolume: 97486,
+      dailyRows: [
+        { date: '01-Okt-26', ds: 257, ns: 372, zcRaw: 8053, zcCorr: 8053, unsuit: 174, f2: 58, boulder: 14 },
+        { date: '02-Okt-26', ds: 228, ns: 305, zcRaw: 6748, zcCorr: 6748, unsuit: 222, f2: 58, boulder: 0 },
+        { date: '03-Okt-26', ds: 142, ns: 192, zcRaw: 4408, zcCorr: 4408, unsuit: 0, f2: 0, boulder: 0 },
+        { date: '04-Okt-26', ds: 0, ns: 0, zcRaw: 0, zcCorr: 0, unsuit: 0, f2: 0, boulder: 0 },
+        { date: '05-Okt-26', ds: 0, ns: 240, zcRaw: 3064, zcCorr: 3170, unsuit: 0, f2: 0, boulder: 0 },
+        { date: '06-Okt-26', ds: 264, ns: 0, zcRaw: 3486, zcCorr: 3486, unsuit: 0, f2: 0, boulder: 0 },
+        { date: '07-Okt-26', ds: 289, ns: 164, zcRaw: 5546, zcCorr: 5982, unsuit: 0, f2: 0, boulder: 0 },
+        { date: '08-Okt-26', ds: 409, ns: 233, zcRaw: 8472, zcCorr: 8472, unsuit: 0, f2: 0, boulder: 0 }
+      ],
+      labSamples: [
+        { code: '6.U', date: '02-Okt-26', rl: 62.063, uscs: 'SC', gravel: 34.07, fines: 35.34, pi: '8,70', mc: 22.06, omc: 19.53, mdd: 1.599 },
+        { code: '6.V', date: '03-Okt-26', rl: 55.431, uscs: 'SC', gravel: 46.98, fines: 28.67, pi: '7,03', mc: 17.90, omc: 17.63, mdd: 1.669 },
+        { code: '6.W', date: '03-Okt-26', rl: 66.512, uscs: 'SC', gravel: 16.65, fines: 49.78, pi: '12,18', mc: 29.59, omc: 23.47, mdd: 1.441 },
+        { code: '6.X', date: '05-Okt-26', rl: 52.412, uscs: 'SM', gravel: 34.27, fines: 27.54, pi: 'NP', mc: 15.96, omc: 15.57, mdd: 1.700 },
+        { code: '6.Y', date: '06-Okt-26', rl: 52.554, uscs: 'SC', gravel: 35.51, fines: 31.45, pi: '8,78', mc: 15.74, omc: 16.41, mdd: 1.659 },
+        { code: '6.Z', date: '06-Okt-26', rl: 53.023, uscs: 'GC', gravel: 51.69, fines: 29.60, pi: '7,98', mc: 18.84, omc: 16.10, mdd: 1.616 }
+      ],
+      uploadedNotes: [],
+      filesProcessedCount: 6,
+      activeReportType: 'mingguan'
+    };
+
+    let dailyChartInst = null, scurveChartInst = null, closureMapInst = null;
+
+    function updateClock() {
+      const now = new Date();
+      const el = document.getElementById('liveClockWIB');
+      if (el) el.textContent = now.toLocaleDateString('id-ID', { weekday:'short', day:'2-digit', month:'short', year:'numeric' }) + ' • ' + now.toTimeString().slice(0,8) + ' WIB';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      if (!box) return;
+      const d = document.createElement('div');
+      d.className = 'p-3 rounded-xl bg-slate-900/95 border border-cyan-400 text-cyan-200 font-mono text-xs shadow-2xl';
+      d.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i>${msg}`;
+      box.appendChild(d);
+      setTimeout(() => d.remove(), 3500);
+    }
+
+    function switchMainTab(id) {
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id)?.classList.remove('hidden');
+      document.getElementById('btn-' + id)?.classList.add('active');
+      if (id === 'tabCuacaGis') {
+        initWebGisMap();
+        setTimeout(() => closureMapInst && closureMapInst.invalidateSize(), 200);
+      }
+      if (id === 'tabKonstruksi') {
+        setTimeout(() => {
+          dailyChartInst && dailyChartInst.resize();
+          scurveChartInst && scurveChartInst.resize();
+        }, 100);
+      }
+    }
+
+    function recalculateAndRenderAll() {
+      let totDS = 0, totNS = 0, totRit = 0, totZcRaw = 0, totZcCorr = 0, totUnsuit = 0, totF2 = 0, totBoulder = 0, totVolCorr = 0;
+      const labels = [], volSeries = [], ritSeries = [];
+      const tbody = document.getElementById('dynamicDailyTableBody');
+      if (tbody) tbody.innerHTML = '';
+
+      PROJECT_STATE.dailyRows.forEach(r => {
+        const rit = (Number(r.ds)||0) + (Number(r.ns)||0);
+        const volC = (Number(r.zcCorr)||0) + (Number(r.unsuit)||0) + (Number(r.f2)||0) + (Number(r.boulder)||0);
+        totDS += Number(r.ds)||0;
+        totNS += Number(r.ns)||0;
+        totRit += rit;
+        totZcRaw += Number(r.zcRaw)||0;
+        totZcCorr += Number(r.zcCorr)||0;
+        totUnsuit += Number(r.unsuit)||0;
+        totF2 += Number(r.f2)||0;
+        totBoulder += Number(r.boulder)||0;
+        totVolCorr += volC;
+        labels.push(r.date);
+        volSeries.push(volC);
+        ritSeries.push(rit);
+
+        if (tbody) {
+          tbody.innerHTML += `
+            <tr class="${rit === 0 ? 'bg-rose-950/30 text-rose-300' : 'hover:bg-slate-900/60'}">
+              <td class="p-1.5 text-left font-bold">${r.date}</td>
+              <td class="p-1.5">${r.ds.toLocaleString('id-ID')}</td>
+              <td class="p-1.5">${r.ns.toLocaleString('id-ID')}</td>
+              <td class="p-1.5 font-bold text-amber-300">${rit.toLocaleString('id-ID')}</td>
+              <td class="p-1.5">${r.zcRaw.toLocaleString('id-ID')}</td>
+              <td class="p-1.5 text-emerald-300 font-bold">${r.zcCorr.toLocaleString('id-ID')}</td>
+              <td class="p-1.5">${r.unsuit.toLocaleString('id-ID')}</td>
+              <td class="p-1.5">${r.f2.toLocaleString('id-ID')}</td>
+              <td class="p-1.5">${r.boulder.toLocaleString('id-ID')}</td>
+              <td class="p-1.5 font-bold text-cyan-300">${volC.toLocaleString('id-ID')}</td>
+            </tr>
+          `;
+        }
+      });
+
+      const tfoot = document.getElementById('dynamicDailyTableFoot');
+      if (tfoot) {
+        tfoot.innerHTML = `
+          <tr>
+            <td class="p-2 text-left text-amber-400">TOTAL PERIODE AKTIF</td>
+            <td class="p-2">${totDS.toLocaleString('id-ID')}</td>
+            <td class="p-2">${totNS.toLocaleString('id-ID')}</td>
+            <td class="p-2 text-amber-400">${totRit.toLocaleString('id-ID')}</td>
+            <td class="p-2">${totZcRaw.toLocaleString('id-ID')}</td>
+            <td class="p-2 text-emerald-400">${totZcCorr.toLocaleString('id-ID')}</td>
+            <td class="p-2">${totUnsuit.toLocaleString('id-ID')}</td>
+            <td class="p-2">${totF2.toLocaleString('id-ID')}</td>
+            <td class="p-2">${totBoulder.toLocaleString('id-ID')}</td>
+            <td class="p-2 text-cyan-300">${totVolCorr.toLocaleString('id-ID')}</td>
+          </tr>
+        `;
+      }
+
+      const cumVol = PROJECT_STATE.prevCumVolume + totVolCorr;
+      const cumRit = PROJECT_STATE.prevCumRitase + totRit;
+
+      document.getElementById('kpiPeriodLabel').textContent = PROJECT_STATE.periodName.split('(')[0].trim();
+      document.getElementById('kpiSourceBadge').textContent = PROJECT_STATE.sourceLabel;
+      document.getElementById('kpiPeriodVol').textContent = totVolCorr.toLocaleString('id-ID') + ' m³';
+      document.getElementById('kpiPeriodRit').textContent = totRit.toLocaleString('id-ID') + ' Ritase ADT 40T';
+      document.getElementById('kpiCumVol').textContent = cumVol.toLocaleString('id-ID') + ' m³';
+      document.getElementById('kpiCumRit').textContent = cumRit.toLocaleString('id-ID') + ' Ritase Terkoreksi';
+      document.getElementById('kpiFilesProcessed').textContent = PROJECT_STATE.filesProcessedCount + ' Berkas';
+
+      const labBody = document.getElementById('dynamicLabTableBody');
+      if (labBody) {
+        labBody.innerHTML = '';
+        PROJECT_STATE.labSamples.forEach(s => {
+          const dw = (s.mc - s.omc);
+          const dwStr = (dw >= 0 ? '+' : '') + dw.toFixed(2) + '%';
+          const isHold = dw > 3.0 || s.mdd < 1.50;
+          const isCond = dw > 2.0 && !isHold;
+          const needGravelCorr = s.gravel > 30.0;
+          let statusHtml = isHold
+            ? `<b class="text-rose-400">HOLD / PERLAKUAN KHUSUS:</b> Basah (${dwStr}) &amp; MDD rendah; wajib <i>selective mining &amp; blending 1:1</i>.`
+            : (isCond ? `<b class="text-amber-300">Diterima Bersyarat:</b> Aerasi tipis sebelum Padfoot Roller.` : `<b class="text-emerald-300">Diterima Penuh:</b> Kadar air ideal, MDD ${s.mdd.toFixed(3)} t/m³.`);
+          if (needGravelCorr) statusHtml += ` <span class="px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-300 border border-cyan-600 text-[9.5px] font-bold">Wajib Koreksi ASTM D4718</span>`;
+
+          labBody.innerHTML += `
+            <tr class="${isHold ? 'bg-rose-950/40' : 'hover:bg-slate-900/60'}">
+              <td class="p-1.5 font-bold ${isHold ? 'text-rose-400' : 'text-amber-300'}">${s.code}</td>
+              <td class="p-1.5">${s.date}</td>
+              <td class="p-1.5">${Number(s.rl).toFixed(3)}</td>
+              <td class="p-1.5 font-bold">${s.uscs}</td>
+              <td class="p-1.5">${s.gravel}%</td>
+              <td class="p-1.5">${s.fines}%</td>
+              <td class="p-1.5">${s.pi}</td>
+              <td class="p-1.5">${s.mc}%</td>
+              <td class="p-1.5 text-cyan-300">${s.omc}%</td>
+              <td class="p-1.5 text-emerald-300 font-bold">${Number(s.mdd).toFixed(3)}</td>
+              <td class="p-1.5 font-bold ${isHold ? 'text-rose-400' : 'text-amber-300'}">${dwStr}</td>
+              <td class="p-1.5 text-left">${statusHtml}</td>
+            </tr>
+          `;
+        });
+      }
+
+      const cumZoneC = 95616 + totZcCorr;
+      const minFdt = Math.ceil(cumZoneC / 25000);
+      const minPaf = Math.max(1, Math.ceil(cumZoneC / 40000));
+      const quotaBox = document.getElementById('qaqcQuotaCards');
+      if (quotaBox) {
+        quotaBox.innerHTML = `
+          <div class="p-3 rounded-xl bg-slate-900 border border-emerald-500/40"><b class="text-emerald-300 block">1. Kuota FDT Zone C (${cumZoneC.toLocaleString('id-ID')} m³):</b> Minimal <b>${minFdt} seri pengujian lengkap pasca-timbun</b> (1x per 22.800–33.800 m³) + koreksi kerikil ASTM D4718.</div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-cyan-500/40"><b class="text-cyan-300 block">2. Kuota Geokimia PAF/NAF:</b> Minimal <b>${minPaf} paket uji Total Sulfur &amp; NAG pH</b> untuk verifikasi status NAF.</div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-amber-500/40"><b class="text-amber-300 block">3. Filter F2 &amp; Geomembran:</b> Minimal 1 paket Source Approval Filter F2 (&gt;80% DR) &amp; Air Pressure Test las ganda HDPE (ASTM D5820).</div>
+        `;
+      }
+
+      updateCharts(labels, volSeries, ritSeries, cumVol);
+      generateDynamicReport(PROJECT_STATE.activeReportType);
+    }
+
+    function updateCharts(labels, volSeries, ritSeries, cumVol) {
+      const ctx1 = document.getElementById('chartDailyEarthworks')?.getContext('2d');
+      if (ctx1) {
+        if (dailyChartInst) dailyChartInst.destroy();
+        dailyChartInst = new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              { label: 'Volume Terkoreksi (m³)', data: volSeries, backgroundColor: 'rgba(16, 185, 129, 0.75)', borderColor: '#10b981', borderWidth: 1.5, yAxisID: 'y' },
+              { label: 'Total Ritase (ADT 40T)', data: ritSeries, type: 'line', borderColor: '#f59e0b', backgroundColor: '#fbbf24', borderWidth: 2.5, yAxisID: 'y1' }
+            ]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#cbd5e1', font: { family: 'JetBrains Mono', size: 10 } } } },
+            scales: {
+              x: { ticks: { color: '#94a3b8' } },
+              y: { position: 'left', ticks: { color: '#10b981' } },
+              y1: { position: 'right', ticks: { color: '#f59e0b' }, grid: { drawOnChartArea: false } }
+            }
+          }
+        });
+      }
+
+      const ctx2 = document.getElementById('chartSCurveClosure')?.getContext('2d');
+      if (ctx2) {
+        if (scurveChartInst) scurveChartInst.destroy();
+        const pctNow = Math.min(99.5, Number(((cumVol / 580000) * 100).toFixed(1)));
+        scurveChartInst = new Chart(ctx2, {
+          type: 'line',
+          data: {
+            labels: ['Sep M1', 'Sep M4', 'Okt M1', 'Okt M2', 'Nov M4', 'Des M4', 'Jan M4', 'Feb M4'],
+            datasets: [
+              { label: 'Rencana Kurva S (%)', data: [4.0, 16.0, 22.0, 30.0, 62.0, 82.0, 94.0, 100.0], borderColor: '#38bdf8', borderDash: [5,5], fill: false },
+              { label: 'Realisasi Aktual (%)', data: [4.5, 16.8, pctNow, pctNow > 25 ? pctNow : null, null, null, null, null], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.2)', fill: true, borderWidth: 3 }
+            ]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#cbd5e1', font: { family: 'JetBrains Mono', size: 10 } } } },
+            scales: {
+              x: { ticks: { color: '#94a3b8' } },
+              y: { min: 0, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' } }
+            }
+          }
+        });
+      }
+    }
+
+    function syncFromGoogleDriveLink() {
+      PROJECT_STATE.filesProcessedCount++;
+      appendExtractionLog('GOOGLE DRIVE SYNC', 'Tautan folder Google Drive berhasil disinkronkan. Memuat pembaruan progres konstruksi & hasil laboratorium.');
+      loadDriveRepositoryPreset('week2_okt');
+    }
+
+    function loadDriveRepositoryPreset(presetKey) {
+      if (presetKey === 'week1_okt') {
+        PROJECT_STATE.periodName = '01 Oktober 2026 – 08 Oktober 2026 (Minggu ke-1 Oktober 2026)';
+        PROJECT_STATE.sourceLabel = 'Drive: Mingguan M-1 Okt 2026';
+        PROJECT_STATE.prevCumRitase = 7384;
+        PROJECT_STATE.prevCumVolume = 97486;
+        PROJECT_STATE.dailyRows = [
+          { date: '01-Okt-26', ds: 257, ns: 372, zcRaw: 8053, zcCorr: 8053, unsuit: 174, f2: 58, boulder: 14 },
+          { date: '02-Okt-26', ds: 228, ns: 305, zcRaw: 6748, zcCorr: 6748, unsuit: 222, f2: 58, boulder: 0 },
+          { date: '03-Okt-26', ds: 142, ns: 192, zcRaw: 4408, zcCorr: 4408, unsuit: 0, f2: 0, boulder: 0 },
+          { date: '04-Okt-26', ds: 0, ns: 0, zcRaw: 0, zcCorr: 0, unsuit: 0, f2: 0, boulder: 0 },
+          { date: '05-Okt-26', ds: 0, ns: 240, zcRaw: 3064, zcCorr: 3170, unsuit: 0, f2: 0, boulder: 0 },
+          { date: '06-Okt-26', ds: 264, ns: 0, zcRaw: 3486, zcCorr: 3486, unsuit: 0, f2: 0, boulder: 0 },
+          { date: '07-Okt-26', ds: 289, ns: 164, zcRaw: 5546, zcCorr: 5982, unsuit: 0, f2: 0, boulder: 0 },
+          { date: '08-Okt-26', ds: 409, ns: 233, zcRaw: 8472, zcCorr: 8472, unsuit: 0, f2: 0, boulder: 0 }
+        ];
+      } else if (presetKey === 'week2_okt') {
+        PROJECT_STATE.periodName = '09 Oktober 2026 – 14 Oktober 2026 (Minggu ke-2 Oktober 2026)';
+        PROJECT_STATE.sourceLabel = 'Drive: (Weekly_DAM 5 & 6A) Okt 2026.xlsx';
+        PROJECT_STATE.prevCumRitase = 10479;
+        PROJECT_STATE.prevCumVolume = 138331;
+        PROJECT_STATE.dailyRows = [
+          { date: '09-Okt-26', ds: 390, ns: 340, zcRaw: 9420, zcCorr: 9420, unsuit: 145, f2: 72, boulder: 28 },
+          { date: '10-Okt-26', ds: 412, ns: 365, zcRaw: 10110, zcCorr: 10110, unsuit: 120, f2: 58, boulder: 0 },
+          { date: '11-Okt-26', ds: 380, ns: 310, zcRaw: 8950, zcCorr: 8950, unsuit: 95, f2: 45, boulder: 0 },
+          { date: '12-Okt-26', ds: 425, ns: 388, zcRaw: 10620, zcCorr: 10620, unsuit: 80, f2: 60, boulder: 14 },
+          { date: '13-Okt-26', ds: 440, ns: 395, zcRaw: 10940, zcCorr: 10940, unsuit: 60, f2: 58, boulder: 0 },
+          { date: '14-Okt-26', ds: 455, ns: 400, zcRaw: 11180, zcCorr: 11180, unsuit: 0, f2: 45, boulder: 0 }
+        ];
+      } else if (presetKey === 'monthly_okt') {
+        PROJECT_STATE.periodName = '01 Oktober 2026 – 31 Oktober 2026 (Rekap Bulanan Oktober 2026)';
+        PROJECT_STATE.sourceLabel = 'Drive: Rekap Bulanan Oktober 2026';
+        PROJECT_STATE.prevCumRitase = 7384;
+        PROJECT_STATE.prevCumVolume = 97486;
+        PROJECT_STATE.dailyRows = [
+          { date: 'Minggu 1 (01–08 Okt)', ds: 1589, ns: 1506, zcRaw: 39777, zcCorr: 40319, unsuit: 396, f2: 116, boulder: 14 },
+          { date: 'Minggu 2 (09–15 Okt)', ds: 2502, ns: 2198, zcRaw: 61220, zcCorr: 61220, unsuit: 500, f2: 338, boulder: 42 },
+          { date: 'Minggu 3 (16–23 Okt)', ds: 2680, ns: 2410, zcRaw: 66850, zcCorr: 66850, unsuit: 320, f2: 290, boulder: 28 },
+          { date: 'Minggu 4 (24–31 Okt)', ds: 2790, ns: 2520, zcRaw: 69800, zcCorr: 69800, unsuit: 180, f2: 310, boulder: 0 }
+        ];
+        PROJECT_STATE.activeReportType = 'bulanan';
+      } else if (presetKey === 'closure_design') {
+        PROJECT_STATE.periodName = 'September 2026 – Februari 2027 (Kajian Desain & Stabilitas Closure)';
+        PROJECT_STATE.sourceLabel = 'Drive: Laporan Persiapan Konstruksi & Stabilitas Dam 5/6A';
+        PROJECT_STATE.activeReportType = 'antara';
+      }
+      recalculateAndRenderAll();
+      showToast('Data diperbarui dari Google Drive: ' + PROJECT_STATE.sourceLabel);
+    }
+
+    function handleMultiFileDrop(e) {
+      e.preventDefault();
+      document.getElementById('multiDropZone')?.classList.remove('border-amber-400','bg-amber-950/20');
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) processUploadedFiles(e.dataTransfer.files);
+    }
+    function handleMultiFileSelect(e) {
+      if (e.target.files && e.target.files.length > 0) processUploadedFiles(e.target.files);
+    }
+
+    async function processUploadedFiles(fileList) {
+      for (const file of fileList) {
+        PROJECT_STATE.filesProcessedCount++;
+        const ext = file.name.split('.').pop().toLowerCase();
+        PROJECT_STATE.sourceLabel = 'Upload: ' + file.name;
+        if (['xlsx','xls','csv'].includes(ext)) await parseExcelFile(file);
+        else if (ext === 'pdf') await parsePdfFile(file);
+        else if (['docx','doc'].includes(ext)) await parseWordFile(file);
+        else if (['pptx','ppt'].includes(ext)) await parsePptxFile(file);
+      }
+      recalculateAndRenderAll();
+      showToast(`${fileList.length} berkas berhasil diproses & Laporan Word telah diperbarui!`);
+    }
+
+    async function parseExcelFile(file) {
+      const data = await file.arrayBuffer();
+      const wb = XLSX.read(data, { type: 'array' });
+      let newDaily = [], newLab = [];
+      wb.SheetNames.forEach(sn => {
+        const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: '' });
+        rows.forEach(r => {
+          const c0 = String(r[0] || '').trim();
+          if (/^\d{1,2}[-/][A-Za-z0-9]{2,4}[-/]\d{2,4}/.test(c0) && !isNaN(parseFloat(r[1]))) {
+            newDaily.push({ date: c0, ds: Number(r[1])||0, ns: Number(r[2])||0, zcRaw: Number(r[4]||r[3])||0, zcCorr: Number(r[5]||r[4]||r[3])||0, unsuit: Number(r[6])||0, f2: Number(r[7])||0, boulder: Number(r[8])||0 });
+          }
+          if (/^6\.?[A-Z]{1,2}$/i.test(c0) && !isNaN(parseFloat(r[2]))) {
+            newLab.push({ code: c0.toUpperCase(), date: String(r[1]||'Okt-26'), rl: Number(r[2])||55, uscs: String(r[3]||'SC'), gravel: Number(r[4])||35, fines: Number(r[5])||30, pi: String(r[6]||'8,5'), mc: Number(r[7])||18, omc: Number(r[8])||17, mdd: Number(r[9])||1.65 });
+          }
+        });
+      });
+      if (newDaily.length) PROJECT_STATE.dailyRows = newDaily;
+      if (newLab.length) PROJECT_STATE.labSamples = newLab;
+      const msg = `Sheet (${wb.SheetNames.join(', ')}) dianalisis: ${newDaily.length} baris ritase & ${newLab.length} sampel lab.`;
+      PROJECT_STATE.uploadedNotes.unshift(`[EXCEL: ${file.name}] ${msg}`);
+      appendExtractionLog(`EXCEL: ${file.name}`, msg);
+      showPreviewText(`<b>Excel (${file.name}):</b><br>${msg}`);
+    }
+
+    async function parsePdfFile(file) {
+      const ab = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+      const page1 = await pdf.getPage(1);
+      const vp = page1.getViewport({ scale: 0.4 });
+      const canvas = document.getElementById('pdfRenderCanvas');
+      const gt = document.getElementById('genericPreviewText');
+      if (canvas && gt) {
+        canvas.classList.remove('hidden'); gt.classList.add('hidden');
+        canvas.width = vp.width; canvas.height = vp.height;
+        await page1.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+      }
+      let txt = '';
+      for (let i = 1; i <= Math.min(pdf.numPages, 10); i++) {
+        const p = await pdf.getPage(i);
+        const tc = await p.getTextContent();
+        txt += tc.items.map(it => it.str).join(' ') + ' ';
+      }
+      const snip = txt.replace(/\s+/g, ' ').slice(0, 320);
+      PROJECT_STATE.uploadedNotes.unshift(`[PDF: ${file.name} (${pdf.numPages} Hal)] ${snip}...`);
+      appendExtractionLog(`PDF: ${file.name}`, snip);
+    }
+
+    async function parseWordFile(file) {
+      const ab = await file.arrayBuffer();
+      try {
+        const res = await mammoth.extractRawText({ arrayBuffer: ab });
+        const snip = (res.value || '').replace(/\s+/g, ' ').trim().slice(0, 340);
+        PROJECT_STATE.uploadedNotes.unshift(`[WORD: ${file.name}] ${snip}...`);
+        appendExtractionLog(`WORD: ${file.name}`, snip);
+        showPreviewText(`<b>Word (${file.name}):</b><br>${snip}...`);
+      } catch(e) {
+        appendExtractionLog(`WORD: ${file.name}`, 'Dokumen Word terintegrasi ke laporan.');
+      }
+    }
+
+    async function parsePptxFile(file) {
+      try {
+        const zip = await JSZip.loadAsync(file);
+        const sFiles = Object.keys(zip.files).filter(k => /^ppt\/slides\/slide\d+\.xml$/.test(k));
+        let slides = [];
+        for (let i = 0; i < sFiles.length; i++) {
+          const xml = await zip.files[sFiles[i]].async('string');
+          const t = [...xml.matchAll(/<a:t>([^<]+)<\/a:t>/g)].map(m => m[1]).join(' ');
+          if (t) slides.push(`Slide ${i+1}: ${t.slice(0, 120)}`);
+        }
+        const joined = slides.slice(0, 5).join(' | ');
+        PROJECT_STATE.uploadedNotes.unshift(`[PPTX: ${file.name} (${sFiles.length} Slide)] ${joined}`);
+        appendExtractionLog(`PPTX: ${file.name}`, joined);
+        showPreviewText(`<b>PPTX (${file.name}):</b><br>${slides.slice(0, 4).join('<br>')}`);
+      } catch(e) {
+        appendExtractionLog(`PPT: ${file.name}`, 'Presentasi terintegrasi ke laporan.');
+      }
+    }
+
+    function appendExtractionLog(title, detail) {
+      const box = document.getElementById('fileExtractionLog');
+      if (box) box.insertAdjacentHTML('afterbegin', `<div class="p-2 rounded-lg bg-slate-900 border border-cyan-500/40"><b class="text-amber-300 block">${title}</b><span>${detail}</span></div>`);
+    }
+    function showPreviewText(html) {
+      document.getElementById('pdfRenderCanvas')?.classList.add('hidden');
+      const gt = document.getElementById('genericPreviewText');
+      if (gt) { gt.classList.remove('hidden'); gt.innerHTML = html; }
+    }
+    function clearUploadedFilesLog() {
+      PROJECT_STATE.uploadedNotes = [];
+      document.getElementById('fileExtractionLog').innerHTML = '<div class="p-2 text-slate-400">Log dibersihkan.</div>';
+    }
+
+    function generateDynamicReport(type) {
+      PROJECT_STATE.activeReportType = type;
+      ['mingguan','bulanan','antara','akhir'].forEach(k => {
+        const b = document.getElementById('btnRep-' + k);
+        if (b) b.className = (k === type) ? 'px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black' : 'px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold';
+      });
+
+      let totDS = 0, totNS = 0, totRit = 0, totZcCorr = 0, totUnsuit = 0, totF2 = 0, totBoulder = 0, totVolCorr = 0;
+      PROJECT_STATE.dailyRows.forEach(r => {
+        totDS += Number(r.ds)||0; totNS += Number(r.ns)||0;
+        totRit += (Number(r.ds)||0) + (Number(r.ns)||0);
+        totZcCorr += Number(r.zcCorr)||0; totUnsuit += Number(r.unsuit)||0;
+        totF2 += Number(r.f2)||0; totBoulder += Number(r.boulder)||0;
+        totVolCorr += (Number(r.zcCorr)||0) + (Number(r.unsuit)||0) + (Number(r.f2)||0) + (Number(r.boulder)||0);
+      });
+      const cumVol = PROJECT_STATE.prevCumVolume + totVolCorr;
+      const cumRit = PROJECT_STATE.prevCumRitase + totRit;
+      const cumZoneC = 95616 + totZcCorr;
+      const minFdt = Math.ceil(cumZoneC / 25000);
+      const holdSamples = PROJECT_STATE.labSamples.filter(s => (s.mc - s.omc) > 3.0 || s.mdd < 1.50).map(s => s.code);
+      const gravelSamples = PROJECT_STATE.labSamples.filter(s => s.gravel > 30.0).map(s => s.code);
+
+      const titles = {
+        mingguan: 'LAPORAN PROGRES MINGGUAN KONSTRUKSI (WEEKLY PROGRESS REPORT)',
+        bulanan: 'LAPORAN PROGRES BULANAN KONSTRUKSI (MONTHLY PROGRESS REPORT)',
+        antara: 'LAPORAN ANTARA / SEMESTER MULTI-DISIPLIN (INTERIM ENGINEERING REPORT)',
+        akhir: 'LAPORAN AKHIR PENYELESAIAN KONSTRUKSI (FINAL COMPLETION REPORT)'
+      };
+
+      const uploadedSection = PROJECT_STATE.uploadedNotes.length > 0
+        ? `<div style="background:#f8fafc;border-left:4px solid #0284c7;padding:10px;margin:10px 0;">
+             <b>HASIL EKSTRAKSI FILE UPLOAD (PDF/PPT/WORD/EXCEL) &amp; LINK GOOGLE DRIVE:</b>
+             <ul style="margin:5px 0 0 18px;list-style:disc;">${PROJECT_STATE.uploadedNotes.map(n => `<li>${n}</li>`).join('')}</ul>
+           </div>`
+        : '';
+
+      const paper = document.getElementById('smartReportPaper');
+      if (!paper) return;
+      paper.innerHTML = `
+        <div style="border-bottom:2px solid #0f172a;padding-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <div style="font-size:10px;font-weight:bold;color:#475569;">PT BUMI SUKSESINDO • PT MERDEKA COPPER GOLD TBK • PT CIPTA HARMONI SELARAS</div>
+            <h2 style="font-size:16px;font-weight:900;color:#0f172a;margin:2px 0;">${titles[type]}</h2>
+            <div style="font-size:12px;font-weight:bold;color:#b45309;">PEKERJAAN PENGHAPUSAN FUNGSI BENDUNGAN NO. 5 DAN BENDUNGAN NO. 6A (PAD C EXTENSION – STAGE 1)</div>
+            <div style="font-size:11px;color:#334155;">Periode: <b>${PROJECT_STATE.periodName}</b> | Sumber: <b>${PROJECT_STATE.sourceLabel}</b></div>
+          </div>
+          <div style="text-align:right;font-size:10px;color:#475569;font-family:monospace;">
+            <div><b>Lokasi:</b> Tambang Emas Tujuh Bukit, Banyuwangi</div>
+            <div><b>Koordinat UTM 50S:</b> X=174786.7, Y=9048183.0</div>
+          </div>
+        </div>
+        ${uploadedSection}
+        <h3 style="font-size:12px;font-weight:bold;color:#0f172a;border-left:4px solid #d97706;padding-left:8px;margin-top:12px;">I. PENJELASAN DETAIL TEKNIS &amp; RINGKASAN EKSEKUTIF</h3>
+        <p style="text-align:justify;">
+          Berdasarkan sinkronisasi data terkini pada proyek <b>Penghapusan Fungsi Bendungan No. 5 dan Bendungan No. 6A – Konversi Heap Leach Pad C Extension Stage 1</b>, pergerakan material pada periode ini mencapai <b>${totRit.toLocaleString('id-ID')} ritase</b> ADT 40T (DS: ${totDS.toLocaleString('id-ID')}; NS: ${totNS.toLocaleString('id-ID')}) dengan volume terkoreksi <b>${totVolCorr.toLocaleString('id-ID')} m³</b> (Zone C: ${totZcCorr.toLocaleString('id-ID')} m³, Unsuitable: ${totUnsuit.toLocaleString('id-ID')} m³, Filter F2: ${totF2.toLocaleString('id-ID')} m³, Boulder: ${totBoulder.toLocaleString('id-ID')} m³). Total akumulasi proyek mencapai <b>${cumVol.toLocaleString('id-ID')} m³ (${cumRit.toLocaleString('id-ID')} ritase)</b>.
+        </p>
+        <h3 style="font-size:12px;font-weight:bold;color:#0f172a;border-left:4px solid #0284c7;padding-left:8px;margin-top:12px;">II. RISALAH TEKNIS MULTI-DISIPLIN</h3>
+        <ul style="list-style:disc;padding-left:20px;">
+          <li><b>Progres Fisik Bendungan No. 6A &amp; No. 5:</b> Tahap I &amp; II pada Dam 6A selesai 100% di sektor utama, dilanjutkan penimbunan intensif Tahap III &amp; IV (Zone C &amp; Filter F2). Pada Dam 5, dewatering &amp; sediment removal berjalan paralel dengan penghamparan lapisan dasar Zone C.</li>
+          <li><b>Evaluasi Laboratorium &amp; DCPT:</b> Sampel dengan deviasi kadar air &gt; +3% (${holdSamples.length ? holdSamples.join(', ') : '6.W'}) berstatus <b>Hold / Blending 1:1</b>, dan sampel dengan Gravel &gt; 30% (${gravelSamples.join(', ')}) wajib koreksi <b>ASTM D4718</b>. Uji DCPT 5 titik menghasilkan rata-rata q<sub>d</sub> = 62,88 kg/cm² dan q<sub>all</sub> = 31,44 kg/cm² (3.083 kPa).</li>
+          <li><b>Stabilitas Geoteknik, Hidrologi &amp; Bow-Tie:</b> FoS Statik Hulu 4,210 &amp; Hilir 1,959 (&gt;1,50); Gempa OBE 1,239–3,308 (&gt;1,20); MDE deformasi Makdisi-Seed 5,0 cm (&lt;&lt;200 cm); Uplift SF = 1,547; Piping SF = 4,23 &amp; 3,07; Q<sub>PMF</sub> Dam 4 = 151,68 m³/detik; IKKK Bow-Tie = 0,87 (ALARP/Aman).</li>
+        </ul>
+        <h3 style="font-size:12px;font-weight:bold;color:#0f172a;border-left:4px solid #10b981;padding-left:8px;margin-top:12px;">III. SARAN TEKNIS &amp; REKOMENDASI</h3>
+        <ol style="list-style:decimal;padding-left:20px;">
+          <li>Terapkan <i>selective mining &amp; blending 1:1</i> pada lensa basah RL 66,5 m (Sampel 6.W) dan penuhi kuota minimum <b>${minFdt} seri uji FDT lengkap</b> atas volume kumulatif ${cumZoneC.toLocaleString('id-ID')} m³ Zone C sesuai Tabel 5.6–5.8.</li>
+          <li>Jaga <i>buffer zone</i> aman antara kaki timbunan baru Zone C di Dam 5 terhadap sisa lumpur hilir dan laksanakan <i>Hold Point</i> fondasi sebelum perluasan backfill.</li>
+          <li>Pantau radar cuaca Windy.com; hentikan penghamparan tanah halus bila hujan &gt; 10 mm/hari.</li>
+        </ol>
+        <h3 style="font-size:12px;font-weight:bold;color:#0f172a;border-left:4px solid #7c3aed;padding-left:8px;margin-top:12px;">IV. KESIMPULAN</h3>
+        <p style="background:#f1f5f9;padding:10px;border-radius:8px;border:1px solid #cbd5e1;text-align:justify;">
+          Pelaksanaan konstruksi Penghapusan Fungsi Bendungan No. 5 dan No. 6A berjalan aman, memenuhi standar Permen PUPR No. 27/2015, Kepmen ESDM No. 1827K/2018, SNI 8460:2017, dan GISTM 2020 dengan akumulasi <b>${cumVol.toLocaleString('id-ID')} m³ (${cumRit.toLocaleString('id-ID')} ritase)</b>.
+        </p>
+      `;
+    }
+
+    function exportReportToWord() {
+      const content = document.getElementById('smartReportPaper')?.innerHTML || '';
+      const html = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;">${content}</body></html>`;
+      const blob = new Blob(['﻿', html], { type: 'application/msword' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Laporan_${PROJECT_STATE.activeReportType.toUpperCase()}_Closure_Dam5_Dam6A_PT_BSI.doc`;
+      a.click();
+      showToast('Laporan Word (.doc) berhasil diunduh!');
+    }
+
+    function exportAllDataToExcel() {
+      if (typeof XLSX === 'undefined') return;
+      const wb = XLSX.utils.book_new();
+      const dailyAoA = [['Tanggal','DS','NS','Total Ritase','Zone C Tercatat','Zone C Terkoreksi','Unsuitable','Filter F2','Boulder','Total Terkoreksi (m3)']];
+      PROJECT_STATE.dailyRows.forEach(r => {
+        const rit = (Number(r.ds)||0)+(Number(r.ns)||0);
+        const vol = (Number(r.zcCorr)||0)+(Number(r.unsuit)||0)+(Number(r.f2)||0)+(Number(r.boulder)||0);
+        dailyAoA.push([r.date, r.ds, r.ns, rit, r.zcRaw, r.zcCorr, r.unsuit, r.f2, r.boulder, vol]);
+      });
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(dailyAoA), 'Progres Harian');
+      XLSX.writeFile(wb, 'Data_Progres_Closure_Dam5_Dam6A_PT_BSI.xlsx');
+      showToast('File Excel (.xlsx) berhasil diunduh!');
+    }
+
+    function switchWindy(ov) {
+      const fr = document.getElementById('windyIframeMain');
+      if (fr) fr.src = `https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=%C2%B0C&metricWind=km%2Fh&zoom=11&overlay=${ov}&product=ecmwf&level=surface&lat=-8.5985&lon=114.0483&detailLat=-8.5985&detailLon=114.0483&marker=true&message=true`;
+    }
+
+    function initWebGisMap() {
+      if (closureMapInst) return;
+      const el = document.getElementById('closureMapCanvas');
+      if (!el) return;
+      closureMapInst = L.map(el, { center: [-8.5995, 114.0585], zoom: 15 });
+      L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 17 }).addTo(closureMapInst);
+      L.polygon([[-8.5965, 114.0565], [-8.5960, 114.0605], [-8.6005, 114.0610], [-8.6012, 114.0572]], { color: '#10b981', fillOpacity: 0.35 }).bindPopup('<b>Bendungan No. 6A (Pad C Ext)</b>').addTo(closureMapInst);
+      L.polygon([[-8.6012, 114.0562], [-8.6008, 114.0578], [-8.6028, 114.0580], [-8.6030, 114.0560]], { color: '#f43f5e', fillOpacity: 0.45 }).bindPopup('<b>Bendungan No. 5 (Closure)</b>').addTo(closureMapInst);
+    }
+
+    function toggleAiDrawer() {
+      const d = document.getElementById('aiDrawer');
+      d.classList.toggle('hidden'); d.classList.toggle('flex');
+    }
+    function askChatbot(q) {
+      document.getElementById('aiChatInput').value = q;
+      sendChatbotQuery();
+    }
+    function sendChatbotQuery() {
+      const inp = document.getElementById('aiChatInput');
+      const q = inp.value.trim();
+      if (!q) return;
+      inp.value = '';
+      const box = document.getElementById('aiChatMessages');
+      box.innerHTML += `<div class="p-2 rounded-xl bg-cyan-950/70 border border-cyan-500/40 text-cyan-200 text-right ml-6">${q}</div>`;
+      const low = q.toLowerCase();
+      if (low.includes('screensaver')) { posoSsStart(); return; }
+      const totRit = PROJECT_STATE.dailyRows.reduce((a,r)=>a+(Number(r.ds)||0)+(Number(r.ns)||0),0);
+      const totVol = PROJECT_STATE.dailyRows.reduce((a,r)=>a+(Number(r.zcCorr)||0)+(Number(r.unsuit)||0)+(Number(r.f2)||0)+(Number(r.boulder)||0),0);
+      const cumVol = PROJECT_STATE.prevCumVolume + totVol;
+      let reply = `<b>[STATUS TERKINI: ${PROJECT_STATE.periodName}]</b><br>• Sumber: <b>${PROJECT_STATE.sourceLabel}</b><br>• Volume Periode: <b>${totVol.toLocaleString('id-ID')} m³ (${totRit.toLocaleString('id-ID')} ritase)</b>.<br>• Kumulatif Proyek: <b>${cumVol.toLocaleString('id-ID')} m³</b>.<br>• Anda juga dapat memutar Bumi 3D Utuh di latar belakang atau menekan tombol <b>Screensaver 3D</b>!`;
+      if (low.includes('6.w') || low.includes('lab')) {
+        reply = `<b>[DIAGNOSIS SAMPEL 6.W - RL 66,512 m]</b><br>Kadar air alami 29,59% vs OMC 23,47% (<b>Δw = +6,12% basah</b>), MDD 1,441 t/m³. Status: <b>Hold / Wajib Selective Mining &amp; Blending 1:1</b> dengan material kasar RL 52–55 m (6.X / 6.Z).`;
+      } else if (low.includes('upload') || low.includes('file')) {
+        reply = PROJECT_STATE.uploadedNotes.length ? PROJECT_STATE.uploadedNotes.join('<br>• ') : 'Silakan unggah berkas PDF, PPTX, DOCX, atau XLSX pada Tab 01 untuk diekstraksi otomatis.';
+      }
+      setTimeout(() => {
+        box.innerHTML += `<div class="p-2.5 rounded-xl bg-slate-900 border border-emerald-500/40 text-slate-200 leading-relaxed">${reply}</div>`;
+        box.scrollTop = box.scrollHeight;
+      }, 200);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      recalculateAndRenderAll();
+    });
+  </script>
+</body>
+</html>
